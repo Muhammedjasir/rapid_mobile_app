@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
+import 'package:rapid_mobile_app/data/widget/container_widget/icon_background_widget.dart';
 import 'package:rapid_mobile_app/res/values/colours.dart';
 import 'package:rapid_mobile_app/res/values/strings.dart';
 
@@ -22,84 +23,44 @@ class HomeBottomBarWidget extends StatelessWidget {
       items: [
         BottomNavigationBarItem(
           label: Strings.kDashboard.tr,
-          activeIcon: const SelectedIconWidget(
+          activeIcon: const IconBackgroundWidget(
             icon: Icons.dashboard_rounded,
+            backgroundColor: colours.yellow,
+            iconColor: colours.black,
           ),
-          icon: const UnSelectedIconWidget(
+          icon: const IconBackgroundWidget(
             icon: Icons.dashboard_rounded,
+            backgroundColor: colours.icon_background_dark_grey,
+            iconColor: colours.yellow,
           ),
         ),
         BottomNavigationBarItem(
           label: Strings.kHome.tr,
-          activeIcon: const SelectedIconWidget(
+          activeIcon: const IconBackgroundWidget(
             icon: Icons.home,
+            backgroundColor: colours.yellow,
+            iconColor: colours.black,
           ),
-          icon: const UnSelectedIconWidget(
+          icon: const IconBackgroundWidget(
             icon: Icons.home,
+            backgroundColor: colours.icon_background_dark_grey,
+            iconColor: colours.yellow,
           ),
         ),
         BottomNavigationBarItem(
           label: Strings.kCalander.tr,
-          activeIcon: const SelectedIconWidget(
+          activeIcon: const IconBackgroundWidget(
             icon: Icons.calendar_today,
+            backgroundColor: colours.yellow,
+            iconColor: colours.black,
           ),
-          icon: const UnSelectedIconWidget(
+          icon: const IconBackgroundWidget(
             icon: Icons.calendar_today,
+            backgroundColor: colours.icon_background_dark_grey,
+            iconColor: colours.yellow,
           ),
         ),
       ],
-    );
-  }
-}
-
-class SelectedIconWidget extends StatelessWidget {
-  const SelectedIconWidget({Key? key, required this.icon}) : super(key: key);
-
-  final IconData icon;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      width: 40,
-      height: 40,
-      margin: const EdgeInsets.only(right: 10),
-      decoration: BoxDecoration(
-        shape: BoxShape.rectangle,
-        borderRadius: BorderRadius.circular(5),
-        color: colours.yellow,
-      ),
-      child: Icon(
-        icon,
-        size: 24,
-        color: colours.black,
-      ),
-    );
-  }
-}
-
-class UnSelectedIconWidget extends StatelessWidget {
-  const UnSelectedIconWidget({Key? key, required this.icon}) : super(key: key);
-
-  final IconData icon;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      width: 40,
-      height: 40,
-      margin: const EdgeInsets.only(right: 10),
-      decoration: BoxDecoration(
-        shape: BoxShape.rectangle,
-        borderRadius: BorderRadius.circular(5),
-        color: colours.icon_background_dark_grey,
-      ),
-      child: Icon(
-        icon,
-        size: 24,
-        color: colours.yellow,
-      ),
     );
   }
 }

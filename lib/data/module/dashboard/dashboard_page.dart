@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:rapid_mobile_app/data/module/dashboard/dashboard_controller.dart';
 import 'package:rapid_mobile_app/data/widget/bottom_bar_widget/home_bottom_bar_widget.dart';
+import 'package:rapid_mobile_app/data/widget/container_widget/icon_background_widget.dart';
 import 'package:rapid_mobile_app/res/values/colours.dart';
 import 'package:rapid_mobile_app/res/values/strings.dart';
 
@@ -20,16 +21,23 @@ class Dashboard extends GetView<DashboardController> {
             left: 5,
             top: 15,
           ),
-          child: SelectedIconWidget(icon: Icons.menu),
+          child: IconBackgroundWidget(
+            icon: Icons.menu,
+            backgroundColor: colours.icon_background_light_grey,
+            iconColor: colours.black,
+          ),
         ),
         actions: const [
-
           Padding(
             padding: EdgeInsets.only(
               left: 5,
               top: 15,
             ),
-            child: SelectedIconWidget(icon: Icons.person),
+            child: IconBackgroundWidget(
+              icon: Icons.person,
+              backgroundColor: colours.icon_background_light_grey,
+              iconColor: colours.black,
+            ),
           ),
         ],
         elevation: 0,
@@ -37,32 +45,6 @@ class Dashboard extends GetView<DashboardController> {
       ),
       body: _bodyWidget(context),
       bottomNavigationBar: const HomeBottomBarWidget(),
-    );
-  }
-}
-
-class SelectedIconWidget extends StatelessWidget {
-  const SelectedIconWidget({Key? key, required this.icon}) : super(key: key);
-
-  final IconData icon;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      width: 40,
-      height: 40,
-      margin: const EdgeInsets.only(right: 10),
-      decoration: BoxDecoration(
-        shape: BoxShape.rectangle,
-        borderRadius: BorderRadius.circular(5),
-        color: colours.icon_background_light_grey,
-      ),
-      child: Icon(
-        icon,
-        size: 24,
-        color: colours.black,
-      ),
     );
   }
 }
