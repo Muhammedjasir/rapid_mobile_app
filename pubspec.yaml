@@ -40,10 +40,10 @@ dependencies:
   get: ^4.3.4
   # Connectivity
   connectivity_plus: ^2.1.0
-  # shared_preferences
-  shared_preferences: ^2.0.11
   # get_storage
   get_storage: ^2.0.3
+  #charts
+  charts_flutter: ^0.12.0
 
 
 dev_dependencies:
