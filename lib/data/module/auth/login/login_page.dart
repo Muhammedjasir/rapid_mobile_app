@@ -7,6 +7,7 @@ import 'package:rapid_mobile_app/data/widget/container_widget/background_widget.
 import 'package:rapid_mobile_app/data/widget/container_widget/login_container_widget.dart';
 import 'package:rapid_mobile_app/data/widget/text_widget/text_widget.dart';
 import 'package:rapid_mobile_app/data/widget/textfields_widget/login_textfield_widget.dart';
+import 'package:rapid_mobile_app/res/values/colours.dart';
 import 'package:rapid_mobile_app/res/values/strings.dart';
 
 class LoginPage extends GetView<LoginController> {
@@ -51,6 +52,8 @@ class LoginWidget extends GetView<LoginController> {
               ),
               child: TextWidget(
                 text: Strings.kLoginTitle.tr,
+                textSize: 22,
+                textColor: colours.text_color,
               ),
             ),
             Padding(

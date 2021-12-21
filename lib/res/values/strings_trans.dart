@@ -14,7 +14,7 @@ class StringsTrans extends Translations {
           Strings.kLoginTitle: 'Login to continue',
           Strings.kdDashboardPage: 'Dashboard',
           Strings.kHome: 'Home',
-          Strings.kCalander: 'Calander',
+          Strings.kCalendar: 'Calendar',
         },
       };
 }

@@ -19,5 +19,5 @@ class Strings {
   static const kLoginTitle = "Login to continue";
   static const kDashboard = "Dashboard";
   static const kHome = "Home";
-  static const kCalander = "Calander";
+  static const kCalendar = "Calendar";
 }

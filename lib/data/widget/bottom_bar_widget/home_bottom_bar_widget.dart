@@ -48,7 +48,7 @@ class HomeBottomBarWidget extends StatelessWidget {
           ),
         ),
         BottomNavigationBarItem(
-          label: Strings.kCalander.tr,
+          label: Strings.kCalendar.tr,
           activeIcon: const IconBackgroundWidget(
             icon: Icons.calendar_today,
             backgroundColor: colours.yellow,
