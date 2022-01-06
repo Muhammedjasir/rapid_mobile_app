@@ -5,7 +5,7 @@ class Strings {
   // page path
   static const kUrlConnectionPage = "/urlConnection";
   static const kLoginPage = "/login";
-  static const kdDashboardPage = "/dashboard";
+  static const kDashboardPage = "/dashboard";
 
   // storage string names
   static const kBaseUrl = "baseUrl";

@@ -12,7 +12,7 @@ class StringsTrans extends Translations {
           Strings.kPassword: 'Password',
           Strings.kLogin: 'Login',
           Strings.kLoginTitle: 'Login to continue',
-          Strings.kdDashboardPage: 'Dashboard',
+          Strings.kDashboard: 'Dashboard',
           Strings.kHome: 'Home',
           Strings.kCalendar: 'Calendar',
         },

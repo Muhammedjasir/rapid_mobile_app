@@ -1,5 +1,3 @@
-import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 
 class LocalStorage {
 
@@ -8,7 +6,7 @@ class LocalStorage {
   // final localStorage = GetStorage();
 
   //All storage Keys
-  // static const baseUrl = "base_url";
+
   static const token = "token";
   static const keyIsSynced = "is_synced";
   static const keyLogin = "login";

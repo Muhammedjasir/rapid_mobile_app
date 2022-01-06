@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rapid_mobile_app/data/widget/buttons_widget/drawer_elevated_button_widget.dart';
 import 'package:rapid_mobile_app/data/widget/text_widget/text_widget.dart';
@@ -18,7 +17,7 @@ class SideDrawer extends StatelessWidget {
           const Padding(
             padding: EdgeInsets.only(top: 45),
             child: TextWidget(
-              text: "BRAND NAME",
+              text: "RAPID APP",
               textSize: 22,
               textColor: colours.white,
             ),

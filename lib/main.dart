@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:rapid_mobile_app/data/api/api_provider.dart';
 import 'package:rapid_mobile_app/res/values/strings.dart';
 
 import 'data/module/auth/login/login_binding.dart';
@@ -14,6 +16,9 @@ import 'data/module/dashboard/dashboard_page.dart';
 
 void main() async {
   await GetStorage.init();
+  Get.lazyPut(
+        () => ApiProvider(),
+  );
   runApp(MyApp());
 }
 
@@ -32,7 +37,7 @@ class MyApp extends StatelessWidget {
       binding: LoginBinding(),
     ),
     GetPage(
-      name: Strings.kdDashboardPage,
+      name: Strings.kDashboardPage,
       page: () => const Dashboard(),
       binding: DashboardBinding(),
     ),
@@ -48,7 +53,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.grey,
       ),
       getPages: pages,
-      initialRoute: Strings.kdDashboardPage,
+      initialRoute: Strings.kLoginPage,
     );
   }
 }

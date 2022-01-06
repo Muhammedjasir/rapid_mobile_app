@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -13,15 +14,13 @@ import 'package:rapid_mobile_app/res/values/strings.dart';
 class LoginPage extends GetView<LoginController> {
   const LoginPage({Key? key}) : super(key: key);
 
-  get baseUrl => Get.arguments[Strings.kBaseUrl];
-
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
       body: LoginWidget(
-          userNameController: controller.userNameController,
-          passwordController: controller.passwordController),
+        userNameController: controller.userNameController,
+        passwordController: controller.passwordController,
+      ),
     );
   }
 }
@@ -37,6 +36,9 @@ class LoginWidget extends GetView<LoginController> {
 
   final TextEditingController _usernameController;
   final TextEditingController _passwordController;
+
+  // base url from intent
+  get baseUrl => Get.arguments[Strings.kBaseUrl];
 
   @override
   Widget build(BuildContext context) {
@@ -88,10 +90,9 @@ class LoginWidget extends GetView<LoginController> {
   }
 
   void _onTapButton() {
-    String userName = controller.userNameController.text.trim();
-    String password = controller.passwordController.text.trim();
-    if (userName.isNotEmpty && password.isNotEmpty) {
-      Get.toNamed(Strings.kdDashboardPage);
+    if (controller.isLoginCredentialsValid()) {
+      final result = controller.logIn();
+      log('responseBody3: $result');
     }
   }
 }

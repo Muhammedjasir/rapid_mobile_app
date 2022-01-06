@@ -49,7 +49,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
         ),
       ],
       elevation: 0,
-      backgroundColor: colours.background_bottom,
+      backgroundColor: colours.background_top,
     );
   }
 
