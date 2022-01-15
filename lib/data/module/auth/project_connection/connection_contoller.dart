@@ -2,11 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 class ConnectionController extends GetxController {
+  final TextEditingController baseUrlControllerUrl = TextEditingController(
+    text: 'https://api.techlogica.com/atmbharath/api/',
+  );
 
-  // Create RXString here
-  Rx<String> baseUrl = ''.obs;
-
-  final TextEditingController textControllerUrl = TextEditingController();
-
-
+  /// Returns true: if the baseurl matches the validation criteria
+  bool isBaseUrlCredentialValid() {
+    return baseUrlControllerUrl.text.isNotEmpty;
+  }
 }

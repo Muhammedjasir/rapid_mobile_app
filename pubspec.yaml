@@ -40,22 +40,31 @@ dependencies:
   get: ^4.3.4
   # Connectivity
   connectivity_plus: ^2.1.0
-  # get_storage
+  # storage
   get_storage: ^2.0.3
   #charts
   charts_flutter: ^0.12.0
+  #Hive database
+  hive: ^2.0.5
+  hive_flutter: ^1.1.0
+  #font awesome icons
+  font_awesome_flutter: ^9.2.0
 
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
+#  hive database generator
+  hive_generator: ^1.1.2
+  build_runner: ^2.1.7
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^1.0.0
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

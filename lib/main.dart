@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:get/get_navigation/src/routes/get_route.dart';
-import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:rapid_mobile_app/data/api/api_provider.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:rapid_mobile_app/data/api/api_client.dart';
+import 'package:rapid_mobile_app/data/model/database_model/metadata_table_response.dart';
+import 'package:rapid_mobile_app/data/repository/online/rapid/rapid_repository.dart';
+import 'package:rapid_mobile_app/res/utils/rapid_pref.dart';
 import 'package:rapid_mobile_app/res/values/strings.dart';
 
 import 'data/module/auth/login/login_binding.dart';
@@ -16,10 +17,17 @@ import 'data/module/dashboard/dashboard_page.dart';
 
 void main() async {
   await GetStorage.init();
-  Get.lazyPut(
-        () => ApiProvider(),
+  _registerServices();
+  await Hive.initFlutter();
+  Hive.registerAdapter(
+    MetadataTableResponseAdapter(),
   );
   runApp(MyApp());
+}
+
+/// Initiating ApiClient and Repo
+void _registerServices() {
+  Get.lazyPut(() => ApiClient());
 }
 
 class MyApp extends StatelessWidget {
@@ -46,6 +54,8 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    var isToken = RapidPref().getToken() ?? "";
+
     return GetMaterialApp(
       title: Strings.kAppName.tr,
       debugShowCheckedModeBanner: false,
@@ -53,7 +63,8 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.grey,
       ),
       getPages: pages,
-      initialRoute: Strings.kLoginPage,
+      initialRoute: Strings.kUrlConnectionPage,
+      // initialRoute: (isToken == '') ?Strings.kUrlConnectionPage:Strings.kDashboardPage,
     );
   }
 }

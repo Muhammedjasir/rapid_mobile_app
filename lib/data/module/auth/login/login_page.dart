@@ -1,5 +1,3 @@
-import 'dart:developer';
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:rapid_mobile_app/data/module/auth/login/login_controller.dart';
@@ -8,6 +6,7 @@ import 'package:rapid_mobile_app/data/widget/container_widget/background_widget.
 import 'package:rapid_mobile_app/data/widget/container_widget/login_container_widget.dart';
 import 'package:rapid_mobile_app/data/widget/text_widget/text_widget.dart';
 import 'package:rapid_mobile_app/data/widget/textfields_widget/login_textfield_widget.dart';
+import 'package:rapid_mobile_app/res/utils/rapid_pref.dart';
 import 'package:rapid_mobile_app/res/values/colours.dart';
 import 'package:rapid_mobile_app/res/values/strings.dart';
 
@@ -36,9 +35,6 @@ class LoginWidget extends GetView<LoginController> {
 
   final TextEditingController _usernameController;
   final TextEditingController _passwordController;
-
-  // base url from intent
-  get baseUrl => Get.arguments[Strings.kBaseUrl];
 
   @override
   Widget build(BuildContext context) {
@@ -89,10 +85,22 @@ class LoginWidget extends GetView<LoginController> {
     );
   }
 
-  void _onTapButton() {
+  void _onTapButton() async {
     if (controller.isLoginCredentialsValid()) {
-      final result = controller.logIn();
-      log('responseBody3: $result');
+      // to get token & project_id
+      final result = await controller.logIn();
+      // check login API status
+      if (result.status == true) {
+        RapidPref().changeToken(result.data['token']);
+        RapidPref().changeProjectId(result.data['Project_id'].toString());
+        RapidPref().changeUserName(controller.userNameController.text);
+        RapidPref().changeUserPassword(controller.passwordController.text);
+        Get.toNamed(
+          Strings.kDashboardPage,
+        );
+      } else {
+        Get.snackbar("Message", result.message);
+      }
     }
   }
 }

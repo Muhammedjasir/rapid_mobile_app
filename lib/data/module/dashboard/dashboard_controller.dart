@@ -1,6 +1,147 @@
+import 'dart:convert';
 
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
+import 'package:rapid_mobile_app/data/database/hive_operations.dart';
+import 'package:rapid_mobile_app/data/model/base/base_response.dart';
+import 'package:rapid_mobile_app/data/model/database_model/metadata_table_response.dart';
+import 'package:rapid_mobile_app/res/utils/rapid_controller.dart';
+import 'package:rapid_mobile_app/res/utils/rapid_pref.dart';
+import 'package:rapid_mobile_app/res/values/logs/logs.dart';
+import 'package:rapid_mobile_app/res/values/strings.dart';
 
-class DashboardController extends GetxController {
+class DashboardController extends RapidController {
+  RxList<MetadataTableResponse> metadataTable =
+      RxList<MetadataTableResponse>([]);
+  RxList<MetadataTableResponse> firstPageData =
+      RxList<MetadataTableResponse>([]);
 
+  @override
+  void onInit() {
+    super.onInit();
+    fetchMetaData();
+  }
+
+  addMetadataTable(MetadataTableResponse responseModel) async {
+    metadataTable.add(responseModel);
+    var box = await Hive.openBox(Strings.kDatabase); //db is database name
+    box.put(Strings.kMetadataTable,
+        metadataTable.toList()); // metadata is table name
+    Logs.logData("object added::", metadataTable.toString());
+  }
+
+  Future fetchMetaDataFromLocalDb() async {
+    //open database
+    Box box = await HiveOperations().openHive();
+    // read table values
+    List<MetadataTableResponse> metadataTableData =
+        box.get(Strings.kMetadataTable).toList().cast<MetadataTableResponse>();
+    Logs.logData("get_local_metadata:", metadataTableData);
+    if (metadataTableData != null) {
+      metadataTable.value = metadataTableData;
+      List<MetadataTableResponse> firstPageResponse =
+          metadataTable.where((element) => element.mdtMenuPrntid == 0).toList();
+      firstPageData.value = firstPageResponse;
+      Logs.logData("local", firstPageResponse[0].mdtMenuTitle.toString());
+    }
+  }
+
+  Future<bool> isMetadataTableEmpty() async {
+    //open database
+    Box box = await HiveOperations().openHive();
+    // read table values
+    var metadataTableData = box.get(Strings.kMetadataTable);
+    return metadataTableData == null;
+  }
+
+  void fetchMetaData() async {
+    final isMetadataEmpty = await isMetadataTableEmpty();
+    if (isMetadataEmpty) {
+      await fetchMetadataFromApi();
+    } else {
+      fetchMetaDataFromLocalDb();
+    }
+  }
+
+  Future<void> fetchMetadataFromApi() async {
+    // Getting meta data frm the API
+    final metaDataResponse = await apiClient.rapidRepo.getMetaData(
+      projectId: RapidPref().getProjectId().toString(),
+    );
+
+    // Checking if the status is success
+    if (metaDataResponse.status) {
+      // get userId
+      final loginResponse = await getLoginTableData(metaDataResponse.data);
+      if (loginResponse.status) {
+        _changeLoginUserId(
+          metaData: metaDataResponse.data,
+          loginData: loginResponse.data,
+        );
+
+        final permissionMenuResponse =
+            await getPermissionMenuData(metaData: metaDataResponse.data);
+        if (permissionMenuResponse.status) {
+          _savePermissionMenuResponseToDb(permissionMenuResponse.data);
+          fetchMetaDataFromLocalDb();
+        }
+      }
+    }
+  }
+
+  /// Fetching the Login table data
+  Future<BaseResponse> getLoginTableData(dynamic metaData) async {
+    String loginTableName = metaData[0]['MDP_TBL_LOGIN'];
+    String userNameColumn = metaData[0]['MDP_LGNFIELD_USERNAME'];
+    String userPasswordColumn = metaData[0]['MDP_LGNFIELD_PASSWORD'];
+    String loginTableIdColumn = metaData[0]['MDP_LGNFIELD_USERID'];
+    String permissionTableName = metaData[0]['MDP_TBL_PERMISSION'];
+    String permissionTableIdColumn = metaData[0]['MDP_PERMSNFIELD_USERID'];
+    String metaDataTableIdColumn = metaData[0]['MDP_PERMSN_TBLID'];
+
+    final result = apiClient.rapidRepo.getLoginTable(
+        loginTableName: loginTableName,
+        userNameColumn: userNameColumn,
+        userPasswordColumn: userPasswordColumn,
+        loginTableIdColumn: loginTableIdColumn,
+        permissionTableName: permissionTableName,
+        permissionTableIdColumn: permissionTableIdColumn,
+        metaDataTableIdColumn: metaDataTableIdColumn);
+
+    return result;
+  }
+
+  Future<BaseResponse> getPermissionMenuData({
+    dynamic metaData,
+  }) async {
+    String permissionTableName = metaData[0]['MDP_TBL_PERMISSION'];
+    String permissionTableIdColumn = metaData[0]['MDP_PERMSNFIELD_USERID'];
+    String metaDataTableIdColumn = metaData[0]['MDP_PERMSN_TBLID'];
+
+    final result = await apiClient.rapidRepo.getPermissionMenuTable(
+      metaDataTableIdColumn: metaDataTableIdColumn,
+      permissionTableName: permissionTableName,
+      permissionTableIdColumn: permissionTableIdColumn,
+    );
+
+    return result;
+  }
+
+  void _changeLoginUserId({
+    required dynamic metaData,
+    required dynamic loginData,
+  }) {
+    String loginTableIdColumn = metaData[0]['MDP_LGNFIELD_USERID'];
+    RapidPref().changeLoginUserId(loginData[0][loginTableIdColumn]);
+  }
+
+  void _savePermissionMenuResponseToDb(dynamic permissionData) {
+    for (int i = 0; i < permissionData.length; ++i) {
+      String res = json.encode(permissionData[i]);
+      // String data1 = res.replaceAll("\\[|\\]","");
+      final jsonDecode = json.decode(res);
+      final data = MetadataTableResponse.fromJson(jsonDecode);
+      addMetadataTable(data);
+    }
+  }
 }
