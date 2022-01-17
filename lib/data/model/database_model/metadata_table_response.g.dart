@@ -32,7 +32,7 @@ class MetadataTableResponseAdapter extends TypeAdapter<MetadataTableResponse> {
       mdtRowVersion: fields[13] as int?,
       mdtCache: fields[14] as String?,
       mdtChildviewtype: fields[15] as String?,
-      mdtSeqno: fields[16] as int?,
+      mdtSeqno: fields[16] == null ? 0 : fields[16] as int,
       mdtTblChildid: fields[17] as int?,
       mdtType: fields[18] as String?,
       mdtIcon: fields[19] as String?,

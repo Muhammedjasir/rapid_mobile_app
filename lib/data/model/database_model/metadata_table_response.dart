@@ -35,8 +35,8 @@ class MetadataTableResponse extends HiveObject {
   String? mdtCache;
   @HiveField(15)
   String? mdtChildviewtype;
-  @HiveField(16)
-  int? mdtSeqno;
+  @HiveField(16,defaultValue: 0)
+  int mdtSeqno;
   @HiveField(17)
   int? mdtTblChildid;
   @HiveField(18)
@@ -70,7 +70,7 @@ class MetadataTableResponse extends HiveObject {
         this.mdtRowVersion,
         this.mdtCache,
         this.mdtChildviewtype,
-        this.mdtSeqno,
+        required this.mdtSeqno,
         this.mdtTblChildid,
         this.mdtType,
         this.mdtIcon,

@@ -7,7 +7,6 @@ import 'package:rapid_mobile_app/data/widget/buttons_widget/login_button_widget.
 import 'package:rapid_mobile_app/data/widget/container_widget/login_container_widget.dart';
 import 'package:rapid_mobile_app/data/widget/textfields_widget/login_textfield_widget.dart';
 import 'package:rapid_mobile_app/res/utils/rapid_pref.dart';
-import 'package:rapid_mobile_app/res/values/logs/logs.dart';
 import 'package:rapid_mobile_app/res/values/strings.dart';
 
 class UrlConnectionPage extends GetView<ConnectionController> {

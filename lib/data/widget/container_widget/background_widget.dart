@@ -24,6 +24,7 @@ class BackgroundWidget extends StatelessWidget {
               end: Alignment.bottomCenter,
               stops: [-1, 1])),
       alignment: alignment,
+      padding: const EdgeInsets.only(top: 25,left: 10,right: 10),
       child: childWidget,
     );
   }

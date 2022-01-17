@@ -39,16 +39,17 @@ class BodyWidget extends GetView<DashboardController> {
       alignment: Alignment.topLeft,
       childWidget: Obx(
         () => GridView.builder(
-          gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-              maxCrossAxisExtent: 200,
-              childAspectRatio: 3 / 2,
-              crossAxisSpacing: 20,
-              mainAxisSpacing: 20),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            crossAxisSpacing: 12,
+            mainAxisSpacing: 12,
+          ),
           itemCount: controller.firstPageData.length,
           itemBuilder: (context, index) {
             return HomeCardViewWidget(
-              icon: controller.firstPageData[index].mdtIcon,
-              title: controller.firstPageData[index].mdtMenuTitle.toString(),
+              // icon: controller.firstPageData[index].mdtIcon,
+              icon: Icons.downloading_rounded,
+              title: controller.firstPageData[index].mdtTblTitle.toString(),
               iconColor: colours.black,
               backgroundColor: colours.icon_background_light_grey,
             );

@@ -3,9 +3,9 @@ import 'package:rapid_mobile_app/data/model/database_model/metadata_table_respon
 import 'package:rapid_mobile_app/res/values/logs/logs.dart';
 import 'package:rapid_mobile_app/res/values/strings.dart';
 
-class HiveOperations {
+class DatabaseOperations {
 
-  Future<Box> openHive() async {
+  Future<Box> openDatabase() async {
     Box box;
     try{
       box = Hive.box(Strings.kDatabase);

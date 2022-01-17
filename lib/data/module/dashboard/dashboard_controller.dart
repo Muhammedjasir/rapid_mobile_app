@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
-import 'package:rapid_mobile_app/data/database/hive_operations.dart';
+import 'package:rapid_mobile_app/data/database/database_operations.dart';
 import 'package:rapid_mobile_app/data/model/base/base_response.dart';
 import 'package:rapid_mobile_app/data/model/database_model/metadata_table_response.dart';
 import 'package:rapid_mobile_app/res/utils/rapid_controller.dart';
@@ -24,31 +24,32 @@ class DashboardController extends RapidController {
 
   addMetadataTable(MetadataTableResponse responseModel) async {
     metadataTable.add(responseModel);
-    var box = await Hive.openBox(Strings.kDatabase); //db is database name
-    box.put(Strings.kMetadataTable,
-        metadataTable.toList()); // metadata is table name
-    Logs.logData("object added::", metadataTable.toString());
+    //open database
+    var box = await Hive.openBox(Strings.kDatabase);
+    // add value to table
+    box.put(Strings.kMetadataTable, metadataTable.toList());
   }
 
   Future fetchMetaDataFromLocalDb() async {
     //open database
-    Box box = await HiveOperations().openHive();
+    Box box = await DatabaseOperations().openDatabase();
     // read table values
     List<MetadataTableResponse> metadataTableData =
         box.get(Strings.kMetadataTable).toList().cast<MetadataTableResponse>();
-    Logs.logData("get_local_metadata:", metadataTableData);
-    if (metadataTableData != null) {
+    if (metadataTableData.isNotEmpty) {
       metadataTable.value = metadataTableData;
+      // check where condition
       List<MetadataTableResponse> firstPageResponse =
           metadataTable.where((element) => element.mdtMenuPrntid == 0).toList();
       firstPageData.value = firstPageResponse;
-      Logs.logData("local", firstPageResponse[0].mdtMenuTitle.toString());
+      // sort list data
+      firstPageData.sort((a, b) => a.mdtSeqno.compareTo(b.mdtSeqno));
     }
   }
 
   Future<bool> isMetadataTableEmpty() async {
     //open database
-    Box box = await HiveOperations().openHive();
+    Box box = await DatabaseOperations().openDatabase();
     // read table values
     var metadataTableData = box.get(Strings.kMetadataTable);
     return metadataTableData == null;

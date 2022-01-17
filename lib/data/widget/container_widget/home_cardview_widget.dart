@@ -10,7 +10,7 @@ class HomeCardViewWidget extends StatelessWidget {
       required this.backgroundColor})
       : super(key: key);
 
-  final String? icon;
+  final IconData icon;
   final Color backgroundColor, iconColor;
   final String title;
 
@@ -18,32 +18,39 @@ class HomeCardViewWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.center,
-      margin: const EdgeInsets.only(right: 10),
       decoration: BoxDecoration(
         shape: BoxShape.rectangle,
-        borderRadius: BorderRadius.circular(5),
+        borderRadius: BorderRadius.circular(10),
         color: backgroundColor,
       ),
-      child: Row(
+      child: Column(
         children: <Widget>[
-
-          Padding(
-            padding: const EdgeInsets.all(5),
-            // child: Icon(
-            //   FontAwesomeIcons[icon],
-            //   size: 24,
-            //   color: iconColor,
-            // ),
+          Expanded(
+            flex: 1,
+            child: Padding(
+              padding: const EdgeInsets.all(5),
+              child: Icon(
+                icon,
+                size: 48,
+                color: iconColor,
+              ),
+            ),
           ),
-          Padding(padding: const EdgeInsets.all(5),
-          child: Text(
-            title,
-            style: const TextStyle(
-                color: colours.black,
-                fontSize: 12,
-                fontFamily: 'Roboto',
-                fontWeight: FontWeight.bold),
-          ),)
+          Padding(
+            padding: const EdgeInsets.only(
+              right: 5,
+              left: 5,
+              bottom: 30,
+            ),
+            child: Text(
+              title,
+              style: const TextStyle(
+                  color: colours.black,
+                  fontSize: 15,
+                  fontFamily: 'Roboto',
+                  fontWeight: FontWeight.w500),
+            ),
+          )
         ],
       ),
     );
