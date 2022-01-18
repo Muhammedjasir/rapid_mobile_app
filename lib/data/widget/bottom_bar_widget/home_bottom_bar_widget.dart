@@ -5,16 +5,15 @@ import 'package:rapid_mobile_app/res/values/colours.dart';
 import 'package:rapid_mobile_app/res/values/strings.dart';
 
 class HomeBottomBarWidget extends StatefulWidget {
-   const HomeBottomBarWidget({
+  const HomeBottomBarWidget({
     Key? key,
-     required this.onItemTap,
+    required this.onItemTap,
   }) : super(key: key);
 
-   final Function onItemTap;
+  final Function onItemTap;
 
-   @override
+  @override
   State<HomeBottomBarWidget> createState() => _HomeBottomBarWidgetState();
-
 }
 
 class _HomeBottomBarWidgetState extends State<HomeBottomBarWidget> {
@@ -23,14 +22,19 @@ class _HomeBottomBarWidgetState extends State<HomeBottomBarWidget> {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
-      currentIndex: 0,
       showSelectedLabels: false,
       showUnselectedLabels: false,
       backgroundColor: colours.black,
       selectedItemColor: colours.white,
       unselectedItemColor: colours.yellow,
       type: BottomNavigationBarType.fixed,
-      onTap: (value) => widget.onItemTap(value),
+      currentIndex: bottomBarSelectedIndex,
+      onTap: (int index) {
+        setState(() {
+          bottomBarSelectedIndex = index;
+        });
+        widget.onItemTap(index);
+      },
       items: [
         BottomNavigationBarItem(
           label: Strings.kDashboard.tr,
@@ -74,5 +78,4 @@ class _HomeBottomBarWidgetState extends State<HomeBottomBarWidget> {
       ],
     );
   }
-
 }

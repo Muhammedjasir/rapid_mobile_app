@@ -32,8 +32,8 @@ class Dashboard extends GetView<DashboardController> {
 
   onItemTap(int onTapIndex) {
     switch(onTapIndex){
-      case 0: return 0;
-      case 1: return controller.fetchMenusFromLocalDb(sysId: 0);
+      case 0: return controller.fetchMenusFromLocalDb(sysId: 0);
+      case 1: return 0;
       case 3: return 0;
       default : return 0;
     }
