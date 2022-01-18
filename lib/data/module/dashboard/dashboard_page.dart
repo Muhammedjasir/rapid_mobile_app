@@ -7,6 +7,7 @@ import 'package:rapid_mobile_app/data/widget/container_widget/background_widget.
 import 'package:rapid_mobile_app/data/widget/container_widget/home_cardview_widget.dart';
 import 'package:rapid_mobile_app/data/widget/drawer_widget/side_drawer.dart';
 import 'package:rapid_mobile_app/res/values/colours.dart';
+import 'package:rapid_mobile_app/res/values/logs/logs.dart';
 import 'package:rapid_mobile_app/res/values/strings.dart';
 
 class Dashboard extends GetView<DashboardController> {
@@ -25,8 +26,17 @@ class Dashboard extends GetView<DashboardController> {
         actionIcon: Icons.person,
       ),
       body: const BodyWidget(),
-      bottomNavigationBar: const HomeBottomBarWidget(),
+      bottomNavigationBar: HomeBottomBarWidget(onItemTap: onItemTap),
     );
+  }
+
+  onItemTap(int onTapIndex) {
+    switch(onTapIndex){
+      case 0: return 0;
+      case 1: return controller.fetchMenusFromLocalDb(sysId: 0);
+      case 3: return 0;
+      default : return 0;
+    }
   }
 }
 
@@ -52,10 +62,15 @@ class BodyWidget extends GetView<DashboardController> {
               title: controller.firstPageData[index].mdtTblTitle.toString(),
               iconColor: colours.black,
               backgroundColor: colours.icon_background_light_grey,
+              onTap: () => _onTap(controller.firstPageData[index].mdtSysId),
             );
           },
         ),
       ),
     );
+  }
+
+  _onTap(int? mdtSysId) {
+    controller.fetchMenusFromLocalDb(sysId: mdtSysId);
   }
 }

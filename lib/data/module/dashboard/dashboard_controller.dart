@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:rapid_mobile_app/data/database/database_operations.dart';
@@ -7,7 +6,6 @@ import 'package:rapid_mobile_app/data/model/base/base_response.dart';
 import 'package:rapid_mobile_app/data/model/database_model/metadata_table_response.dart';
 import 'package:rapid_mobile_app/res/utils/rapid_controller.dart';
 import 'package:rapid_mobile_app/res/utils/rapid_pref.dart';
-import 'package:rapid_mobile_app/res/values/logs/logs.dart';
 import 'package:rapid_mobile_app/res/values/strings.dart';
 
 class DashboardController extends RapidController {
@@ -38,13 +36,20 @@ class DashboardController extends RapidController {
         box.get(Strings.kMetadataTable).toList().cast<MetadataTableResponse>();
     if (metadataTableData.isNotEmpty) {
       metadataTable.value = metadataTableData;
-      // check where condition
-      List<MetadataTableResponse> firstPageResponse =
-          metadataTable.where((element) => element.mdtMenuPrntid == 0).toList();
-      firstPageData.value = firstPageResponse;
-      // sort list data
-      firstPageData.sort((a, b) => a.mdtSeqno.compareTo(b.mdtSeqno));
+      fetchMenusFromLocalDb(sysId: 0);
     }
+  }
+
+  Future fetchMenusFromLocalDb({
+    int? sysId,
+  }) async {
+    // check where condition
+    List<MetadataTableResponse> firstPageResponse = metadataTable
+        .where((element) => element.mdtMenuPrntid == sysId)
+        .toList();
+    firstPageData.value = firstPageResponse;
+    // sort list data
+    firstPageData.sort((a, b) => a.mdtSeqno.compareTo(b.mdtSeqno));
   }
 
   Future<bool> isMetadataTableEmpty() async {

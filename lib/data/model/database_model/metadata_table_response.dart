@@ -105,7 +105,7 @@ class MetadataTableResponse extends HiveObject {
     mdtRowVersion: json["MDT_ROW_VERSION"]?.toInt(),
     mdtCache: json["MDT_CACHE"],
     mdtChildviewtype: json["MDT_CHILDVIEWTYPE"],
-    mdtSeqno: json["MDT_SEQNO"]?.toInt(),
+    mdtSeqno: json["MDT_SEQNO"] == null ? 100 : json["MDT_SEQNO"].toInt(),
     mdtTblChildid: json["MDT_TBL_CHILDID"]?.toInt(),
     mdtType: json["MDT_TYPE"],
     mdtIcon: json["MDT_ICON"],

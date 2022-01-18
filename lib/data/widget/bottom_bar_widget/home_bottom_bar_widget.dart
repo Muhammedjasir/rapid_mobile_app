@@ -1,14 +1,24 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:rapid_mobile_app/data/widget/container_widget/icon_background_widget.dart';
 import 'package:rapid_mobile_app/res/values/colours.dart';
 import 'package:rapid_mobile_app/res/values/strings.dart';
 
-class HomeBottomBarWidget extends StatelessWidget {
-  const HomeBottomBarWidget({
+class HomeBottomBarWidget extends StatefulWidget {
+   const HomeBottomBarWidget({
     Key? key,
+     required this.onItemTap,
   }) : super(key: key);
+
+   final Function onItemTap;
+
+   @override
+  State<HomeBottomBarWidget> createState() => _HomeBottomBarWidgetState();
+
+}
+
+class _HomeBottomBarWidgetState extends State<HomeBottomBarWidget> {
+  int bottomBarSelectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +30,7 @@ class HomeBottomBarWidget extends StatelessWidget {
       selectedItemColor: colours.white,
       unselectedItemColor: colours.yellow,
       type: BottomNavigationBarType.fixed,
+      onTap: (value) => widget.onItemTap(value),
       items: [
         BottomNavigationBarItem(
           label: Strings.kDashboard.tr,
@@ -63,4 +74,5 @@ class HomeBottomBarWidget extends StatelessWidget {
       ],
     );
   }
+
 }

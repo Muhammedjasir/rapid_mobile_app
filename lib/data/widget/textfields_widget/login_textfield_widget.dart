@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:rapid_mobile_app/res/values/strings.dart';
 
 class LoginTextFieldWidget extends StatelessWidget {
