@@ -18,17 +18,13 @@ class ApiClient extends GetConnect {
   }
 
   Future<BaseResponse> executeRequest({
-    required String url,
+    required String endpoint,
     required String method,
     Map<String, dynamic>? body,
     Map<String, String>? headers,
   }) async {
-
-    Logs.logData("url:", httpClient.baseUrl);
-
-
     var response = await request<dynamic>(
-      url,
+      endpoint,
       method,
       body: json.encode(body),
       headers: headers,

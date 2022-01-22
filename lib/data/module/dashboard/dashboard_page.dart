@@ -31,11 +31,15 @@ class Dashboard extends GetView<DashboardController> {
   }
 
   onItemTap(int onTapIndex) {
-    switch(onTapIndex){
-      case 0: return controller.fetchMenusFromLocalDb(sysId: 0);
-      case 1: return 0;
-      case 3: return 0;
-      default : return 0;
+    switch (onTapIndex) {
+      case 0:
+        return 0;
+      case 1:
+        return controller.fetchMenusFromLocalDb(sysId: 0);
+      case 3:
+        return 0;
+      default:
+        return 0;
     }
   }
 }
@@ -47,6 +51,7 @@ class BodyWidget extends GetView<DashboardController> {
   Widget build(BuildContext context) {
     return BackgroundWidget(
       alignment: Alignment.topLeft,
+      padding: const EdgeInsets.only(top: 25, left: 10, right: 10),
       childWidget: Obx(
         () => GridView.builder(
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -62,7 +67,11 @@ class BodyWidget extends GetView<DashboardController> {
               title: controller.firstPageData[index].mdtTblTitle.toString(),
               iconColor: colours.black,
               backgroundColor: colours.icon_background_light_grey,
-              onTap: () => _onTap(controller.firstPageData[index].mdtSysId),
+              onTap: () => _onTap(
+                  controller.firstPageData[index].mdtSysId,
+                  controller.firstPageData[index].mdtTblName,
+                  controller.firstPageData[index].mdtTblTitle,
+                  controller.firstPageData[index].mdtDefaultwhere),
             );
           },
         ),
@@ -70,7 +79,22 @@ class BodyWidget extends GetView<DashboardController> {
     );
   }
 
-  _onTap(int? mdtSysId) {
+  _onTap(int? mdtSysId, String? menuName,String? menuTitle, String? defaultCondition) {
+    // call sub menus
     controller.fetchMenusFromLocalDb(sysId: mdtSysId);
+    // check list is empty (there are no submenus under that sys_id)
+    if (controller.firstPageData.isEmpty) {
+      Logs.logData("sysId :: ", mdtSysId.toString());
+      defaultCondition ??= '';
+      Get.toNamed(
+        Strings.kMenuDetailedPage,
+        arguments: {
+          "MDT_SYS_ID": mdtSysId,
+          "MENU_NAME": menuName,
+          "MENU_TITLE": menuTitle,
+          "MDT_DEFAULT_WHERE": defaultCondition
+        },
+      );
+    }
   }
 }

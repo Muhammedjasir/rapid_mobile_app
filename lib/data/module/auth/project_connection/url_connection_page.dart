@@ -17,6 +17,7 @@ class UrlConnectionPage extends GetView<ConnectionController> {
     return Scaffold(
       body: BackgroundWidget(
         alignment: Alignment.center,
+        padding: const EdgeInsets.all(10),
         childWidget: LoginContainerWidget(
           childWidget: Column(
             mainAxisSize: MainAxisSize.min,

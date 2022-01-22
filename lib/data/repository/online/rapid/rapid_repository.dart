@@ -7,6 +7,7 @@ import 'package:rapid_mobile_app/res/values/strings.dart';
 
 abstract class IRapidRepository {
   /// Getting meta data using the Rapid REST API
+
   Future<BaseResponse> getMetaData({
     required String projectId,
   });
@@ -25,6 +26,13 @@ abstract class IRapidRepository {
     required String permissionTableName,
     required String permissionTableIdColumn,
   });
+
+  Future<BaseResponse> getMetadataColumns({required String sysId});
+
+  Future<BaseResponse> getMenuColumnValues(
+      {required String tableName,
+      required String defaultCondition,
+      required int pageNo});
 }
 
 class RapidRepository extends IRapidRepository {
@@ -45,7 +53,7 @@ class RapidRepository extends IRapidRepository {
     };
     // request and response
     BaseResponse result = await _apiClient.executeRequest(
-      url: 'GetData',
+      endpoint: 'GetData',
       method: HttpMethod.POST,
       body: body,
       headers: headers,
@@ -92,6 +100,39 @@ class RapidRepository extends IRapidRepository {
         "(SELECT $metaDataTableIdColumn FROM $permissionTableName WHERE "
         "$permissionTableIdColumn = ${RapidPref().getLoginUserId()})";
     final result = await getBaseData(menuQuery);
+    return result;
+  }
+
+  @override
+  Future<BaseResponse> getMetadataColumns({required String sysId}) async {
+    String columnsQuery =
+        'SELECT * FROM METADATA_COLUMNS WHERE MDC_MDT_SYS_ID = ' + sysId;
+    final result = await getBaseData(columnsQuery);
+    return result;
+  }
+
+  @override
+  Future<BaseResponse> getMenuColumnValues(
+      {required String tableName,
+      required String defaultCondition,
+      required int pageNo}) async {
+    String columnsQuery;
+    if (defaultCondition.isEmpty) {
+      columnsQuery = 'SELECT * FROM ' +
+          tableName +
+          ' offset ' +
+          (pageNo-10).toString() +
+          ' rows  fetch next 10 rows only';
+    } else {
+      columnsQuery = 'SELECT * FROM ' +
+          tableName +
+          ' WHERE ' +
+          defaultCondition +
+          'offset ' +
+          (pageNo-10).toString() +
+          ' rows  fetch next 10 rows only';
+    }
+    final result = await getBaseData(columnsQuery);
     return result;
   }
 }

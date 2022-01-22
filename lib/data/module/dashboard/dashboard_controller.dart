@@ -1,9 +1,9 @@
 import 'dart:convert';
+
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
-import 'package:rapid_mobile_app/data/database/database_operations.dart';
 import 'package:rapid_mobile_app/data/model/base/base_response.dart';
-import 'package:rapid_mobile_app/data/model/database_model/metadata_table_response.dart';
+import 'package:rapid_mobile_app/data/model/metadata_table_model/metadata_table_response.dart';
 import 'package:rapid_mobile_app/res/utils/rapid_controller.dart';
 import 'package:rapid_mobile_app/res/utils/rapid_pref.dart';
 import 'package:rapid_mobile_app/res/values/strings.dart';
@@ -23,15 +23,15 @@ class DashboardController extends RapidController {
   addMetadataTable(MetadataTableResponse responseModel) async {
     metadataTable.add(responseModel);
     //open database
-    var box = await Hive.openBox(Strings.kDatabase);
+    Box box = await dbAccess.openDatabase();
     // add value to table
     box.put(Strings.kMetadataTable, metadataTable.toList());
   }
 
   Future fetchMetaDataFromLocalDb() async {
     //open database
-    Box box = await DatabaseOperations().openDatabase();
-    // read table values
+    Box box = await dbAccess.openDatabase();
+    // read metadata table values
     List<MetadataTableResponse> metadataTableData =
         box.get(Strings.kMetadataTable).toList().cast<MetadataTableResponse>();
     if (metadataTableData.isNotEmpty) {
@@ -52,16 +52,9 @@ class DashboardController extends RapidController {
     firstPageData.sort((a, b) => a.mdtSeqno.compareTo(b.mdtSeqno));
   }
 
-  Future<bool> isMetadataTableEmpty() async {
-    //open database
-    Box box = await DatabaseOperations().openDatabase();
-    // read table values
-    var metadataTableData = box.get(Strings.kMetadataTable);
-    return metadataTableData == null;
-  }
-
   void fetchMetaData() async {
-    final isMetadataEmpty = await isMetadataTableEmpty();
+    final isMetadataEmpty =
+        await dbAccess.isMetadataTableEmpty(Strings.kMetadataTable);
     if (isMetadataEmpty) {
       await fetchMetadataFromApi();
     } else {
@@ -144,7 +137,6 @@ class DashboardController extends RapidController {
   void _savePermissionMenuResponseToDb(dynamic permissionData) {
     for (int i = 0; i < permissionData.length; ++i) {
       String res = json.encode(permissionData[i]);
-      // String data1 = res.replaceAll("\\[|\\]","");
       final jsonDecode = json.decode(res);
       final data = MetadataTableResponse.fromJson(jsonDecode);
       addMetadataTable(data);

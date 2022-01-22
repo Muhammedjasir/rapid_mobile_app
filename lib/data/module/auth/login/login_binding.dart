@@ -4,7 +4,6 @@ import 'package:rapid_mobile_app/data/module/auth/login/login_controller.dart';
 class LoginBinding extends Bindings{
   @override
   void dependencies() {
-
     Get.lazyPut(() => LoginController());
   }
 
