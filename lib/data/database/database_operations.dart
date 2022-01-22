@@ -1,6 +1,4 @@
 import 'package:hive/hive.dart';
-import 'package:rapid_mobile_app/data/model/database_model/metadata_table_response.dart';
-import 'package:rapid_mobile_app/res/values/logs/logs.dart';
 import 'package:rapid_mobile_app/res/values/strings.dart';
 
 class DatabaseOperations {
@@ -14,6 +12,14 @@ class DatabaseOperations {
       // Logs().logData("get_local_metadata.error:", error);
     }
     return box;
+  }
+
+  Future<bool> isMetadataTableEmpty(String tableName) async {
+    //open database
+    Box box = await openDatabase();
+    // read table values
+    var tableData = box.get(tableName);
+    return tableData == null;
   }
 
 }

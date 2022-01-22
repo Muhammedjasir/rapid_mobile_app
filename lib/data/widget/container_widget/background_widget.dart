@@ -6,10 +6,12 @@ class BackgroundWidget extends StatelessWidget {
     Key? key,
     required this.childWidget,
     required this.alignment,
+    required this.padding,
   }) : super(key: key);
 
   final Widget childWidget;
   final Alignment alignment;
+  final EdgeInsets padding;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +26,7 @@ class BackgroundWidget extends StatelessWidget {
               end: Alignment.bottomCenter,
               stops: [-1, 1])),
       alignment: alignment,
-      padding: const EdgeInsets.only(top: 25,left: 10,right: 10),
+      padding: padding,
       child: childWidget,
     );
   }

@@ -21,7 +21,7 @@ class LoginController extends RapidController {
     Map<String, String>? headers = {Strings.kHeaderKey:"$generateRandomString()",};
 
     BaseResponse result = await apiClient.executeRequest(
-      url: '',
+      endpoint: '',
       method: HttpMethod.POST,
       body: body,
       headers: headers

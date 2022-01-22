@@ -3,11 +3,14 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:rapid_mobile_app/data/api/api_client.dart';
-import 'package:rapid_mobile_app/data/model/database_model/metadata_table_response.dart';
-import 'package:rapid_mobile_app/data/repository/online/rapid/rapid_repository.dart';
+import 'package:rapid_mobile_app/data/database/database_operations.dart';
+import 'package:rapid_mobile_app/data/module/subpage/menu_detailed_page/menu_detailed_binding.dart';
+import 'package:rapid_mobile_app/data/module/subpage/menu_detailed_page/menu_detailed_page.dart';
 import 'package:rapid_mobile_app/res/utils/rapid_pref.dart';
 import 'package:rapid_mobile_app/res/values/strings.dart';
 
+import 'data/model/metadata_columns_model/metadata_columns_response.dart';
+import 'data/model/metadata_table_model/metadata_table_response.dart';
 import 'data/module/auth/login/login_binding.dart';
 import 'data/module/auth/login/login_page.dart';
 import 'data/module/auth/project_connection/connection_binding.dart';
@@ -22,12 +25,16 @@ void main() async {
   Hive.registerAdapter(
     MetadataTableResponseAdapter(),
   );
+  Hive.registerAdapter(
+    MetadataColumnsResponseAdapter(),
+  );
   runApp(MyApp());
 }
 
 /// Initiating ApiClient and Repo
 void _registerServices() {
   Get.lazyPut(() => ApiClient());
+  Get.lazyPut(() => DatabaseOperations());
 }
 
 class MyApp extends StatelessWidget {
@@ -48,6 +55,11 @@ class MyApp extends StatelessWidget {
       name: Strings.kDashboardPage,
       page: () => const Dashboard(),
       binding: DashboardBinding(),
+    ),
+    GetPage(
+      name: Strings.kMenuDetailedPage,
+      page: () => const MenuDetailedPage(),
+      binding: MenuDetailedBinding(),
     ),
   ];
 

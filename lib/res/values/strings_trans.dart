@@ -15,6 +15,14 @@ class StringsTrans extends Translations {
           Strings.kDashboard: 'Dashboard',
           Strings.kHome: 'Home',
           Strings.kCalendar: 'Calendar',
+          Strings.kAdd: 'Add',
+          Strings.kSearch: 'Search',
+          Strings.kAdvanceSearch: 'Advance Search',
+          Strings.kFilter: 'Filter',
+          Strings.kAddColumns: 'Add Columns',
+          Strings.kExportExcel: 'Export to Excel',
+          Strings.kExportPdf: 'Export to Pdf',
+          Strings.kSearchHint: 'Search here...',
         },
       };
 }

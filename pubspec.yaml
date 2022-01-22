@@ -49,6 +49,8 @@ dependencies:
   hive_flutter: ^1.1.0
   #font awesome icons
   font_awesome_flutter: ^9.2.0
+  #DataGrid (DataTable) library
+  syncfusion_flutter_datagrid: ^19.4.43
 
 
 dev_dependencies:

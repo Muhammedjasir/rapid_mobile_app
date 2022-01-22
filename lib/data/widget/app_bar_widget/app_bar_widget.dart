@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:rapid_mobile_app/data/widget/container_widget/icon_background_widget.dart';
 import 'package:rapid_mobile_app/res/values/colours.dart';
 
@@ -9,43 +8,49 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
     required this.title,
     required this.leadingIcon,
     required this.actionIcon,
-    // required this.onTapLeadingIcon,
-    // required this.onTapActionIcon,
+    this.onTapLeadingIcon,
+    this.onTapActionIcon,
   }) : super(key: key);
 
   final String title;
   final IconData leadingIcon;
   final IconData actionIcon;
-  // final VoidCallback? onTapLeadingIcon;
-  // final VoidCallback? onTapActionIcon;
+  final VoidCallback? onTapLeadingIcon;
+  final VoidCallback? onTapActionIcon;
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: Text(title),
-      centerTitle: true,
-      leading: Padding(
-        padding: const EdgeInsets.only(
-          left: 5,
-          top: 15,
-        ),
-        child: IconBackgroundWidget(
-          icon: leadingIcon,
-          backgroundColor: colours.icon_background_light_grey,
-          iconColor: colours.black,
-        ),
-      ),
-      actions: [
-        Padding(
+      leading: InkWell(
+        child: Padding(
           padding: const EdgeInsets.only(
             left: 5,
             top: 15,
           ),
           child: IconBackgroundWidget(
-            icon: actionIcon,
+            icon: leadingIcon,
             backgroundColor: colours.icon_background_light_grey,
             iconColor: colours.black,
           ),
+        ),
+        onTap: onTapLeadingIcon,
+      ),
+      title: Text(title),
+      centerTitle: true,
+      actions: [
+        InkWell(
+          child: Padding(
+            padding: const EdgeInsets.only(
+              left: 5,
+              top: 15,
+            ),
+            child: IconBackgroundWidget(
+              icon: actionIcon,
+              backgroundColor: colours.icon_background_light_grey,
+              iconColor: colours.black,
+            ),
+          ),
+          onTap: onTapActionIcon,
         ),
       ],
       elevation: 0,
