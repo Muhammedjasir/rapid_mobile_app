@@ -111,6 +111,9 @@ class _BodyWidget extends GetView<MenuDetailedController> {
               },
             );
           },
+          allowSorting: true,
+          allowMultiColumnSorting: true,
+          showSortNumbers: true,
           columns: _getColumns(),
         ),
       ),
@@ -124,7 +127,6 @@ class _BodyWidget extends GetView<MenuDetailedController> {
         GridColumn(
           // width: double.nan,
           columnName: element.mdcColName.toString(),
-          allowSorting: true,
           columnWidthMode: ColumnWidthMode.fitByColumnName,
           label: Container(
             padding: const EdgeInsets.all(0),
