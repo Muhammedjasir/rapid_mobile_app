@@ -23,6 +23,8 @@ class StringsTrans extends Translations {
           Strings.kExportExcel: 'Export to Excel',
           Strings.kExportPdf: 'Export to Pdf',
           Strings.kSearchHint: 'Search here...',
+          Strings.kOk: 'Ok',
+          Strings.kSubmit: 'Submit',
         },
       };
 }

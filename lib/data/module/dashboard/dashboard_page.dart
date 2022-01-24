@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:rapid_mobile_app/data/module/dashboard/dashboard_controller.dart';
-import 'package:rapid_mobile_app/data/widget/app_bar_widget/app_bar_widget.dart';
-import 'package:rapid_mobile_app/data/widget/bottom_bar_widget/home_bottom_bar_widget.dart';
-import 'package:rapid_mobile_app/data/widget/container_widget/background_widget.dart';
-import 'package:rapid_mobile_app/data/widget/container_widget/home_cardview_widget.dart';
-import 'package:rapid_mobile_app/data/widget/drawer_widget/side_drawer.dart';
+import 'package:rapid_mobile_app/data/widget/app_bar/app_bar_widget.dart';
+import 'package:rapid_mobile_app/data/widget/bottom_bar/home_bottom_bar_widget.dart';
+import 'package:rapid_mobile_app/data/widget/container/background_widget.dart';
+import 'package:rapid_mobile_app/data/widget/container/home_cardview_widget.dart';
+import 'package:rapid_mobile_app/data/widget/drawer/side_drawer.dart';
 import 'package:rapid_mobile_app/res/values/colours.dart';
 import 'package:rapid_mobile_app/res/values/logs/logs.dart';
 import 'package:rapid_mobile_app/res/values/strings.dart';
@@ -25,7 +25,7 @@ class Dashboard extends GetView<DashboardController> {
         leadingIcon: Icons.menu,
         actionIcon: Icons.person,
       ),
-      body: const BodyWidget(),
+      body: const _BodyWidget(),
       bottomNavigationBar: HomeBottomBarWidget(onItemTap: onItemTap),
     );
   }
@@ -44,8 +44,8 @@ class Dashboard extends GetView<DashboardController> {
   }
 }
 
-class BodyWidget extends GetView<DashboardController> {
-  const BodyWidget({Key? key}) : super(key: key);
+class _BodyWidget extends GetView<DashboardController> {
+  const _BodyWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

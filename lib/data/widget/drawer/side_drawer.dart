@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:rapid_mobile_app/data/widget/buttons_widget/drawer_elevated_button_widget.dart';
-import 'package:rapid_mobile_app/data/widget/text_widget/text_widget.dart';
+import 'package:rapid_mobile_app/data/widget/buttons/drawer_elevated_button_widget.dart';
+import 'package:rapid_mobile_app/data/widget/text/text_widget.dart';
 import 'package:rapid_mobile_app/res/values/colours.dart';
 
 class SideDrawer extends StatelessWidget {

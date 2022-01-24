@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:rapid_mobile_app/data/database/database_operations.dart';
@@ -9,8 +10,12 @@ import 'package:rapid_mobile_app/res/values/logs/logs.dart';
 import 'package:rapid_mobile_app/res/values/strings.dart';
 
 class MenuDetailedController extends RapidController {
+
+  final TextEditingController controllerSearch = TextEditingController();
+
   // navigation argument
-  dynamic argumentData = Get.arguments;
+  dynamic get argumentData => Get.arguments;
+  late String menuName,menuDefaultWhere;
 
   RxList<MetadataColumnsResponse> metadataColumnsTable =
       RxList<MetadataColumnsResponse>([]);
@@ -18,17 +23,15 @@ class MenuDetailedController extends RapidController {
       RxList<MetadataColumnsResponse>([]);
   RxList<dynamic> menuData = RxList<dynamic>([]);
 
+  int pageNumberMenuData = 10;
+
   @override
   onInit() {
     super.onInit();
+    menuName = argumentData['MENU_NAME'];
+    menuDefaultWhere = argumentData['MDT_DEFAULT_WHERE'];
     fetchSelectedMenuMetadataColumns(
       argumentData['MDT_SYS_ID'],
-    );
-
-    fetchSelectedMenuColumnValues(
-      tableName: argumentData['MENU_NAME'],
-      defaultCondition: argumentData['MDT_DEFAULT_WHERE'],
-      page: 10,
     );
   }
 
@@ -120,7 +123,17 @@ class MenuDetailedController extends RapidController {
         tableName: tableName, defaultCondition: defaultCondition, pageNo: page);
     if (menuDataResponse.status) {
       List<dynamic> menuColumnData = menuDataResponse.data;
-      menuData.value = menuColumnData;
+      // menuData.value = menuColumnData;
+      menuData.addAll(menuColumnData);
+      pageNumberMenuData += 10;
     }
+  }
+
+  Future<void> loadMenuData() async {
+    fetchSelectedMenuColumnValues(
+      tableName: menuName,
+      defaultCondition: menuDefaultWhere,
+      page: pageNumberMenuData,
+    );
   }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
-import 'package:rapid_mobile_app/data/widget/container_widget/icon_background_widget.dart';
+import 'package:rapid_mobile_app/data/widget/container/icon_background_widget.dart';
 import 'package:rapid_mobile_app/res/values/colours.dart';
 import 'package:rapid_mobile_app/res/values/strings.dart';
 

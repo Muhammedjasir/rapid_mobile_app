@@ -3,9 +3,11 @@ import 'package:rapid_mobile_app/res/values/strings.dart';
 
 class LoginTextFieldWidget extends StatelessWidget {
   // hint,icon,controller
-  const LoginTextFieldWidget(
-      {Key? key, required this.hint, required TextEditingController controller})
-      : _controller = controller,
+  const LoginTextFieldWidget({
+    Key? key,
+    required this.hint,
+    required TextEditingController controller,
+  })  : _controller = controller,
         super(key: key);
 
   final String hint;

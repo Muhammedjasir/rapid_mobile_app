@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rapid_mobile_app/data/widget/container_widget/icon_background_widget.dart';
+import 'package:rapid_mobile_app/data/widget/container/icon_background_widget.dart';
 import 'package:rapid_mobile_app/res/values/colours.dart';
 
 class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {

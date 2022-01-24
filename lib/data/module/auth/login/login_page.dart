@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:rapid_mobile_app/data/module/auth/login/login_controller.dart';
-import 'package:rapid_mobile_app/data/widget/buttons_widget/login_button_widget.dart';
-import 'package:rapid_mobile_app/data/widget/container_widget/background_widget.dart';
-import 'package:rapid_mobile_app/data/widget/container_widget/login_container_widget.dart';
-import 'package:rapid_mobile_app/data/widget/text_widget/text_widget.dart';
-import 'package:rapid_mobile_app/data/widget/textfields_widget/login_textfield_widget.dart';
+import 'package:rapid_mobile_app/data/widget/buttons/login_button_widget.dart';
+import 'package:rapid_mobile_app/data/widget/container/background_widget.dart';
+import 'package:rapid_mobile_app/data/widget/container/login_container_widget.dart';
+import 'package:rapid_mobile_app/data/widget/text/text_widget.dart';
+import 'package:rapid_mobile_app/data/widget/textfields/login_text_field_widget.dart';
 import 'package:rapid_mobile_app/res/utils/rapid_pref.dart';
 import 'package:rapid_mobile_app/res/values/colours.dart';
 import 'package:rapid_mobile_app/res/values/strings.dart';

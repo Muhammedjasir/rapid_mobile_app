@@ -17,14 +17,16 @@ class BackgroundWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
-          gradient: LinearGradient(
-              colors: [
-                colours.background_top,
-                colours.background_bottom,
-              ],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              stops: [-1, 1])),
+        gradient: LinearGradient(
+          colors: [
+            colours.background_top,
+            colours.background_bottom,
+          ],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          stops: [-1, 1],
+        ),
+      ),
       alignment: alignment,
       padding: padding,
       child: childWidget,

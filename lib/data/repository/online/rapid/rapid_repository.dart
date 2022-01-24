@@ -121,16 +121,16 @@ class RapidRepository extends IRapidRepository {
       columnsQuery = 'SELECT * FROM ' +
           tableName +
           ' offset ' +
-          (pageNo-10).toString() +
-          ' rows  fetch next 10 rows only';
+          pageNo.toString() +
+          ' rows  fetch next 15 rows only';
     } else {
       columnsQuery = 'SELECT * FROM ' +
           tableName +
           ' WHERE ' +
           defaultCondition +
           'offset ' +
-          (pageNo-10).toString() +
-          ' rows  fetch next 10 rows only';
+          pageNo.toString() +
+          ' rows  fetch next 15 rows only';
     }
     final result = await getBaseData(columnsQuery);
     return result;

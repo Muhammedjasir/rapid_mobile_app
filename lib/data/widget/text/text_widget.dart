@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:rapid_mobile_app/res/values/colours.dart';
 
 class TextWidget extends StatelessWidget {
   const TextWidget({

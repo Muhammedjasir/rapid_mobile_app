@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/state_manager.dart';
 import 'package:rapid_mobile_app/data/model/metadata_columns_model/metadata_columns_response.dart';
 import 'package:rapid_mobile_app/data/module/subpage/menu_detailed_page/menu_detailed_controller.dart';
-import 'package:rapid_mobile_app/data/widget/app_bar_widget/app_bar_widget.dart';
-import 'package:rapid_mobile_app/data/widget/bottom_bar_widget/menu_bottom_bar_widget.dart';
-import 'package:rapid_mobile_app/data/widget/container_widget/background_widget.dart';
-import 'package:rapid_mobile_app/res/values/logs/logs.dart';
+import 'package:rapid_mobile_app/data/widget/app_bar/app_bar_widget.dart';
+import 'package:rapid_mobile_app/data/widget/bottom_bar/menu_bottom_bar_widget.dart';
+import 'package:rapid_mobile_app/data/widget/bottom_sheet/common_search_bottom_sheet_widget.dart';
+import 'package:rapid_mobile_app/data/widget/container/background_widget.dart';
+import 'package:rapid_mobile_app/data/widget/loading_indicator/loading_indicator_widget.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 class MenuDetailedPage extends GetView<MenuDetailedController> {
   const MenuDetailedPage({Key? key}) : super(key: key);
+
 
   @override
   Widget build(BuildContext context) {
@@ -29,12 +32,11 @@ class MenuDetailedPage extends GetView<MenuDetailedController> {
   }
 
   _onTapAppbarActionIcon() {
-    // alertBoxCommonSearch(controller);
-    Logs.logData("search click::", "true");
+    _alertBoxCommonSearch();
   }
 
   _onTapAppbarLeadingIcon() {
-    // Get.back();
+    Get.back();
   }
 
   _onItemTap(int onTapIndex) {
@@ -58,11 +60,17 @@ class MenuDetailedPage extends GetView<MenuDetailedController> {
     }
   }
 
-  void _alertBoxCommonSearch(MenuDetailedController controller) {
-    // controller.listDataGridSource;
-    // Get.bottomSheet(
-    //   const SearchBottomSheet(),
-    // );
+  void _alertBoxCommonSearch() {
+    Get.bottomSheet(
+      CommonSearchBottomSheetWidget(
+        onTap: () => {
+          controller.loadMenuData(),
+        },
+        controller: controller.controllerSearch,
+      ),
+      enableDrag: true,
+      // isDismissible: true,
+    );
   }
 }
 
@@ -72,8 +80,6 @@ class _BodyWidget extends GetView<MenuDetailedController> {
   /// Determine to decide whether the device in landscape or in portrait
   final bool isLandscapeInMobileView = false;
 
-  // late ListDataGridSource _listDataGridSource;
-
   @override
   Widget build(BuildContext context) {
     return BackgroundWidget(
@@ -81,11 +87,31 @@ class _BodyWidget extends GetView<MenuDetailedController> {
       alignment: Alignment.topLeft,
       childWidget: Obx(
         () => SfDataGrid(
-          columns: _getColumns(),
           source: ListDataGridSource(
             rowData: controller.menuData,
             columnData: controller.selectedMenuColumns,
+            loadMore: controller.loadMenuData,
           ),
+          loadMoreViewBuilder:
+              (BuildContext context, LoadMoreRows loadMoreRows) {
+            Future<String> loadRows() async {
+              await loadMoreRows();
+              return Future<String>.value('Completed');
+            }
+
+            return FutureBuilder<String>(
+              initialData: 'loading',
+              future: loadRows(),
+              builder: (context, snapShot) {
+                if (snapShot.data == 'loading') {
+                  return const RapidLoadingIndicator();
+                } else {
+                  return SizedBox.fromSize(size: Size.zero);
+                }
+              },
+            );
+          },
+          columns: _getColumns(),
         ),
       ),
     );
@@ -119,6 +145,7 @@ class ListDataGridSource extends DataGridSource {
   ListDataGridSource({
     required List<dynamic> rowData,
     required List<MetadataColumnsResponse> columnData,
+    required this.loadMore,
   }) {
     _rowData = rowData
         .map<DataGridRow>(
@@ -140,6 +167,8 @@ class ListDataGridSource extends DataGridSource {
   @override
   List<DataGridRow> get rows => _rowData;
 
+  Future<void> Function() loadMore;
+
   @override
   DataGridRowAdapter? buildRow(DataGridRow row) {
     return DataGridRowAdapter(
@@ -153,5 +182,12 @@ class ListDataGridSource extends DataGridSource {
         },
       ).toList(),
     );
+  }
+
+  @override
+  Future<void> handleLoadMoreRows() async {
+    await Future.delayed(const Duration(seconds: 4));
+    loadMore();
+    notifyListeners();
   }
 }

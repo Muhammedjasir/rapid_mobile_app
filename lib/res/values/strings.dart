@@ -40,6 +40,8 @@ class Strings {
   static const kAddColumns = 'Add Columns';
   static const kExportExcel = 'Export to Excel';
   static const kExportPdf = 'Export to Pdf';
+  static const kOk = 'Ok';
+  static const kSubmit = 'Submit';
 
   // hive database strings
   static const kDatabase = 'db';

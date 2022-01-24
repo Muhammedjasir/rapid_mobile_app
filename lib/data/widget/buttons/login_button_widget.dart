@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:rapid_mobile_app/res/values/colours.dart';
 
 class LoginButtonWidget extends StatelessWidget {
-  const LoginButtonWidget({Key? key, this.onTap, required this.label})
-      : super(key: key);
+  const LoginButtonWidget({
+    Key? key,
+    this.onTap,
+    required this.label,
+  }) : super(key: key);
 
   final VoidCallback? onTap;
   final String label;
