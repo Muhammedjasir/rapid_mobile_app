@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
 
-class IconBackgroundWidget extends StatelessWidget {
-  const IconBackgroundWidget({
+class IconBackgroundWidget extends StatefulWidget {
+   const IconBackgroundWidget({
     Key? key,
-    required this.icon,
+    this.icon,
     required this.backgroundColor,
     required this.iconColor,
   }) : super(key: key);
 
-  final IconData icon;
+  final IconData? icon;
   final Color backgroundColor, iconColor;
 
+  @override
+  State<IconBackgroundWidget> createState() => _IconBackgroundWidgetState();
+}
+
+class _IconBackgroundWidgetState extends State<IconBackgroundWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -21,12 +26,12 @@ class IconBackgroundWidget extends StatelessWidget {
       decoration: BoxDecoration(
         shape: BoxShape.rectangle,
         borderRadius: BorderRadius.circular(5),
-        color: backgroundColor,
+        color: widget.backgroundColor,
       ),
       child: Icon(
-        icon,
+        widget.icon,
         size: 24,
-        color: iconColor,
+        color: widget.iconColor,
       ),
     );
   }

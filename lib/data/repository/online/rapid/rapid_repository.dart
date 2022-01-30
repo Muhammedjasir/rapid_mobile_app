@@ -33,6 +33,12 @@ abstract class IRapidRepository {
       {required String tableName,
       required String defaultCondition,
       required int pageNo});
+
+  Future<BaseResponse> getChartTabs();
+
+  Future<BaseResponse> getChartDashboard();
+
+  Future<BaseResponse> getChartDashboardPrice({required String query});
 }
 
 class RapidRepository extends IRapidRepository {
@@ -49,7 +55,7 @@ class RapidRepository extends IRapidRepository {
     // header
     Map<String, String>? headers = {
       Strings.kAuthorization: "${Strings.kBearer} ${RapidPref().getToken()}",
-      Strings.kHeaderKey: "$generateRandomString()",
+      Strings.kHeaderKey: GetTraceId().generateRandomString(),
     };
     // request and response
     BaseResponse result = await _apiClient.executeRequest(
@@ -121,7 +127,7 @@ class RapidRepository extends IRapidRepository {
       columnsQuery = 'SELECT * FROM ' +
           tableName +
           ' offset ' +
-          pageNo.toString() +
+          (pageNo - 10).toString() +
           ' rows  fetch next 15 rows only';
     } else {
       columnsQuery = 'SELECT * FROM ' +
@@ -129,10 +135,33 @@ class RapidRepository extends IRapidRepository {
           ' WHERE ' +
           defaultCondition +
           'offset ' +
-          pageNo.toString() +
+          (pageNo - 10).toString() +
           ' rows  fetch next 15 rows only';
     }
     final result = await getBaseData(columnsQuery);
     return result;
+  }
+
+  @override
+  Future<BaseResponse> getChartTabs() async {
+    String columnsQuery = 'SELECT * FROM CHART_GROUP';
+    final result = await getBaseData(columnsQuery);
+    return result;
+  }
+
+  @override
+  Future<BaseResponse> getChartDashboard() async {
+    String columnsQuery = 'SELECT * FROM MT_DASHBOARD,MT_DASHBOARD_USER '
+            'WHERE MTD_SYS_ID=MTDU_MTD_DASH_ID AND MTDU_MTL_USER_ID=' +
+        RapidPref().getLoginUserId().toString();
+    final result = await getBaseData(columnsQuery);
+    return result;
+  }
+
+  @override
+  Future<BaseResponse> getChartDashboardPrice({
+    required String? query,
+  }) async {
+    return await getBaseData(query);
   }
 }

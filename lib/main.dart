@@ -4,13 +4,21 @@ import 'package:get_storage/get_storage.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:rapid_mobile_app/data/api/api_client.dart';
 import 'package:rapid_mobile_app/data/database/database_operations.dart';
+import 'package:rapid_mobile_app/data/model/chart_dashboard_model/chart_dashboard_response.dart';
+import 'package:rapid_mobile_app/data/module/Calendar/calendar_binding.dart';
+import 'package:rapid_mobile_app/data/module/Calendar/calendar_page.dart';
+import 'package:rapid_mobile_app/data/module/charts/chart_binding.dart';
+import 'package:rapid_mobile_app/data/module/charts/chart_page.dart';
+import 'package:rapid_mobile_app/data/module/home/home_binding.dart';
+import 'package:rapid_mobile_app/data/module/home/home_page.dart';
 import 'package:rapid_mobile_app/data/module/subpage/menu_detailed_page/menu_detailed_binding.dart';
 import 'package:rapid_mobile_app/data/module/subpage/menu_detailed_page/menu_detailed_page.dart';
-import 'package:rapid_mobile_app/res/utils/rapid_pref.dart';
 import 'package:rapid_mobile_app/res/values/strings.dart';
 
+import 'data/model/chart_tab_model/chart_tab_response.dart';
 import 'data/model/metadata_columns_model/metadata_columns_response.dart';
 import 'data/model/metadata_table_model/metadata_table_response.dart';
+import 'data/model/projects_list_model/project_list_response.dart';
 import 'data/module/auth/login/login_binding.dart';
 import 'data/module/auth/login/login_page.dart';
 import 'data/module/auth/project_connection/connection_binding.dart';
@@ -22,12 +30,8 @@ void main() async {
   await GetStorage.init();
   _registerServices();
   await Hive.initFlutter();
-  Hive.registerAdapter(
-    MetadataTableResponseAdapter(),
-  );
-  Hive.registerAdapter(
-    MetadataColumnsResponseAdapter(),
-  );
+  _registerAdapter();
+
   runApp(MyApp());
 }
 
@@ -35,6 +39,25 @@ void main() async {
 void _registerServices() {
   Get.lazyPut(() => ApiClient());
   Get.lazyPut(() => DatabaseOperations());
+}
+
+///register hive adapter
+void _registerAdapter() {
+  Hive.registerAdapter(
+    MetadataTableResponseAdapter(),
+  );
+  Hive.registerAdapter(
+    MetadataColumnsResponseAdapter(),
+  );
+  Hive.registerAdapter(
+    ProjectListResponseAdapter(),
+  );
+  Hive.registerAdapter(
+    ChartTabResponseAdapter(),
+  );
+  Hive.registerAdapter(
+    ChartDashboardResponseAdapter(),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -61,13 +84,26 @@ class MyApp extends StatelessWidget {
       page: () => const MenuDetailedPage(),
       binding: MenuDetailedBinding(),
     ),
+    GetPage(
+      name: Strings.kChartPage,
+      page: () => const ChartPage(),
+      binding: ChartBinding(),
+    ),
+    GetPage(
+      name: Strings.kHomePage,
+      page: () => const HomePage(),
+      binding: HomeBinding(),
+    ),
+    GetPage(
+      name: Strings.kCalendarPage,
+      page: () => const CalendarPage(),
+      binding: CalendarBinding(),
+    ),
   ];
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    var isToken = RapidPref().getToken() ?? "";
-
     return GetMaterialApp(
       title: Strings.kAppName.tr,
       debugShowCheckedModeBanner: false,
@@ -76,7 +112,6 @@ class MyApp extends StatelessWidget {
       ),
       getPages: pages,
       initialRoute: Strings.kUrlConnectionPage,
-      // initialRoute: (isToken == '') ?Strings.kUrlConnectionPage:Strings.kDashboardPage,
     );
   }
 }

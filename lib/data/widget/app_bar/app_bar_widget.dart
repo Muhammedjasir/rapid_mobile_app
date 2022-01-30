@@ -7,14 +7,14 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
     Key? key,
     required this.title,
     required this.leadingIcon,
-    required this.actionIcon,
+    this.actionIcon,
     this.onTapLeadingIcon,
     this.onTapActionIcon,
   }) : super(key: key);
 
   final String title;
   final IconData leadingIcon;
-  final IconData actionIcon;
+  final IconData? actionIcon;
   final VoidCallback? onTapLeadingIcon;
   final VoidCallback? onTapActionIcon;
 
@@ -38,6 +38,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
       title: Text(title),
       centerTitle: true,
       actions: [
+        if (actionIcon != null)
         InkWell(
           child: Padding(
             padding: const EdgeInsets.only(

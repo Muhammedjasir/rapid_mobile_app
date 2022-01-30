@@ -2,17 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/state_manager.dart';
 import 'package:rapid_mobile_app/data/model/metadata_columns_model/metadata_columns_response.dart';
+import 'package:rapid_mobile_app/data/module/subpage/menu_detailed_page/list_menu_detailed_data_grid_source.dart';
 import 'package:rapid_mobile_app/data/module/subpage/menu_detailed_page/menu_detailed_controller.dart';
 import 'package:rapid_mobile_app/data/widget/app_bar/app_bar_widget.dart';
 import 'package:rapid_mobile_app/data/widget/bottom_bar/menu_bottom_bar_widget.dart';
 import 'package:rapid_mobile_app/data/widget/bottom_sheet/common_search_bottom_sheet_widget.dart';
 import 'package:rapid_mobile_app/data/widget/container/background_widget.dart';
 import 'package:rapid_mobile_app/data/widget/loading_indicator/loading_indicator_widget.dart';
+import 'package:rapid_mobile_app/res/values/colours.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 class MenuDetailedPage extends GetView<MenuDetailedController> {
   const MenuDetailedPage({Key? key}) : super(key: key);
-
 
   @override
   Widget build(BuildContext context) {
@@ -20,19 +21,13 @@ class MenuDetailedPage extends GetView<MenuDetailedController> {
       appBar: AppBarWidget(
         title: controller.argumentData['MENU_TITLE'],
         leadingIcon: Icons.keyboard_backspace,
-        actionIcon: Icons.search,
         onTapLeadingIcon: _onTapAppbarLeadingIcon,
-        onTapActionIcon: _onTapAppbarActionIcon,
       ),
       body: const _BodyWidget(),
       bottomNavigationBar: MenuBottomBarWidget(
         onItemTap: _onItemTap,
       ),
     );
-  }
-
-  _onTapAppbarActionIcon() {
-    _alertBoxCommonSearch();
   }
 
   _onTapAppbarLeadingIcon() {
@@ -42,21 +37,18 @@ class MenuDetailedPage extends GetView<MenuDetailedController> {
   _onItemTap(int onTapIndex) {
     switch (onTapIndex) {
       case 0:
-        return 0;
+        break;
       case 1:
-        return 0;
+        _alertBoxCommonSearch();
+        break;
       case 2:
-        return 0;
+        break;
       case 3:
-        return 0;
+        break;
       case 4:
-        return 0;
+        break;
       case 5:
-        return 0;
-      case 6:
-        return 0;
-      default:
-        return 0;
+        break;
     }
   }
 
@@ -65,11 +57,11 @@ class MenuDetailedPage extends GetView<MenuDetailedController> {
       CommonSearchBottomSheetWidget(
         onTap: () => {
           controller.loadMenuData(),
+        Get.back(),
         },
         controller: controller.controllerSearch,
       ),
       enableDrag: true,
-      // isDismissible: true,
     );
   }
 }
@@ -83,11 +75,11 @@ class _BodyWidget extends GetView<MenuDetailedController> {
   @override
   Widget build(BuildContext context) {
     return BackgroundWidget(
-      padding: const EdgeInsets.only(top: 15, left: 5, right: 5),
+      padding: const EdgeInsets.only(top: 15, left: 0, right: 0),
       alignment: Alignment.topLeft,
       childWidget: Obx(
         () => SfDataGrid(
-          source: ListDataGridSource(
+          source: ListMenuDetailedDataGridSource(
             rowData: controller.menuData,
             columnData: controller.selectedMenuColumns,
             loadMore: controller.loadMenuData,
@@ -111,13 +103,53 @@ class _BodyWidget extends GetView<MenuDetailedController> {
               },
             );
           },
+          tableSummaryRows: _getSummaryColumns(),
+          columns: _getColumns(),
           allowSorting: true,
           allowMultiColumnSorting: true,
           showSortNumbers: true,
-          columns: _getColumns(),
         ),
       ),
     );
+  }
+
+  List<GridTableSummaryRow> _getSummaryColumns() {
+    List<MetadataColumnsResponse> tableData = controller.selectedMenuColumns;
+    List<GridTableSummaryRow> rows;
+    rows = <GridTableSummaryRow>[
+      GridTableSummaryRow(
+        color: colours.icon_background_dark_grey,
+        showSummaryInRow: false,
+        columns: [
+          for (var element in tableData)
+            if (element.mdcSummaryType != null)
+              GridSummaryColumn(
+                name: element.mdcShowincoloumn.toString(),
+                columnName: element.mdcShowincoloumn.toString() == 'ACTION'
+                    ? tableData[0].mdcColName
+                    : element.mdcShowincoloumn.toString(),
+                summaryType: _onSummeryType(element.mdcSummaryType),
+              ),
+        ],
+        position: GridTableSummaryRowPosition.bottom,
+      ),
+    ];
+    return rows;
+  }
+
+  _onSummeryType(int? typeNumber) {
+    switch (typeNumber) {
+      case 1:
+        return GridSummaryType.sum;
+      case 2:
+        return GridSummaryType.maximum;
+      case 3:
+        return GridSummaryType.minimum;
+      case 4:
+        return GridSummaryType.average;
+      case 5:
+        return GridSummaryType.count;
+    }
   }
 
   List<GridColumn> _getColumns() {
@@ -125,12 +157,11 @@ class _BodyWidget extends GetView<MenuDetailedController> {
     columns = <GridColumn>[
       for (var element in controller.selectedMenuColumns)
         GridColumn(
-          // width: double.nan,
           columnName: element.mdcColName.toString(),
           columnWidthMode: ColumnWidthMode.fitByColumnName,
           label: Container(
-            padding: const EdgeInsets.all(0),
-            alignment: Alignment.center,
+            padding: const EdgeInsets.only(left: 5),
+            alignment: Alignment.centerLeft,
             child: Text(
               element.mdcMetatitle.toString(),
               overflow: TextOverflow.clip,
@@ -143,53 +174,3 @@ class _BodyWidget extends GetView<MenuDetailedController> {
   }
 }
 
-class ListDataGridSource extends DataGridSource {
-  ListDataGridSource({
-    required List<dynamic> rowData,
-    required List<MetadataColumnsResponse> columnData,
-    required this.loadMore,
-  }) {
-    _rowData = rowData
-        .map<DataGridRow>(
-          (e) => DataGridRow(
-            cells: [
-              for (var item in columnData)
-                DataGridCell<dynamic>(
-                  columnName: item.mdcColName.toString(),
-                  value: e[item.mdcColName],
-                ),
-            ],
-          ),
-        )
-        .toList();
-  }
-
-  List<DataGridRow> _rowData = [];
-
-  @override
-  List<DataGridRow> get rows => _rowData;
-
-  Future<void> Function() loadMore;
-
-  @override
-  DataGridRowAdapter? buildRow(DataGridRow row) {
-    return DataGridRowAdapter(
-      cells: row.getCells().map<Widget>(
-        (e) {
-          return Container(
-            alignment: Alignment.center,
-            padding: const EdgeInsets.all(0),
-            child: Text(e.value.toString()),
-          );
-        },
-      ).toList(),
-    );
-  }
-
-  @override
-  Future<void> handleLoadMoreRows() async {
-    await Future.delayed(const Duration(seconds: 4));
-    loadMore();
-    notifyListeners();
-  }
-}

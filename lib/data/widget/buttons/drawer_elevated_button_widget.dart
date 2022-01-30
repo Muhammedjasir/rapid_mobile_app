@@ -9,11 +9,13 @@ class DrawerElevatedButtonWidget extends StatelessWidget {
     required this.title,
     required this.colorIconTitle,
     required this.colorBackground,
+    this.onTap,
   }) : super(key: key);
 
   final IconData icon;
   final String title;
   final Color colorIconTitle, colorBackground;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -31,9 +33,6 @@ class DrawerElevatedButtonWidget extends StatelessWidget {
             fontFamily: 'Roboto',
             fontWeight: FontWeight.w600),
       ),
-      onPressed: () {
-        log("Pressed");
-      },
       style: ElevatedButton.styleFrom(
         primary: colorBackground,
         shape: RoundedRectangleBorder(
@@ -42,6 +41,9 @@ class DrawerElevatedButtonWidget extends StatelessWidget {
         alignment: Alignment.centerLeft,
         padding: const EdgeInsets.all(10),
       ),
+      onPressed: () {
+        onTap;
+      },
     );
   }
 }

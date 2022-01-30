@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:rapid_mobile_app/data/database/database_operations.dart';
@@ -37,7 +37,7 @@ class MenuDetailedController extends RapidController {
 
   void fetchSelectedMenuMetadataColumns(int sysId) async {
     final isMetadataColumnEmpty = await DatabaseOperations()
-        .isMetadataTableEmpty(Strings.kMetadataColumns + sysId.toString());
+        .isTableEmpty(Strings.kMetadataColumns + sysId.toString());
     if (isMetadataColumnEmpty) {
       await fetchMetadataColumnsFromApi(sysId);
     } else {
@@ -125,7 +125,7 @@ class MenuDetailedController extends RapidController {
       List<dynamic> menuColumnData = menuDataResponse.data;
       // menuData.value = menuColumnData;
       menuData.addAll(menuColumnData);
-      pageNumberMenuData += 10;
+      pageNumberMenuData += 15;
     }
   }
 

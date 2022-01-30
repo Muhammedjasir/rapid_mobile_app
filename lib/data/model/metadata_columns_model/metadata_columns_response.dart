@@ -10,7 +10,7 @@ class MetadataColumnsResponse extends HiveObject {
   @HiveField(2)
   int? mdcMdtSysId;
   @HiveField(3)
-  String? mdcColName;
+  String mdcColName;
   @HiveField(4)
   String? mdcDatatype;
   @HiveField(5)
@@ -93,7 +93,7 @@ class MetadataColumnsResponse extends HiveObject {
   MetadataColumnsResponse(
       {this.mdcSysId,
       this.mdcMdtSysId,
-      this.mdcColName,
+      required this.mdcColName,
       this.mdcDatatype,
       this.mdcKeyinfo,
       this.mdcMetatitle,

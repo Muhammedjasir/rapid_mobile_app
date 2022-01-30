@@ -53,8 +53,7 @@ class DashboardController extends RapidController {
   }
 
   void fetchMetaData() async {
-    final isMetadataEmpty =
-        await dbAccess.isMetadataTableEmpty(Strings.kMetadataTable);
+    final isMetadataEmpty = await dbAccess.isTableEmpty(Strings.kMetadataTable);
     if (isMetadataEmpty) {
       await fetchMetadataFromApi();
     } else {

@@ -20,7 +20,7 @@ class MetadataColumnsResponseAdapter
     return MetadataColumnsResponse(
       mdcSysId: fields[1] as int?,
       mdcMdtSysId: fields[2] as int?,
-      mdcColName: fields[3] as String?,
+      mdcColName: fields[3] as String,
       mdcDatatype: fields[4] as String?,
       mdcKeyinfo: fields[5] as String?,
       mdcMetatitle: fields[6] as String?,

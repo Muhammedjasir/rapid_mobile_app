@@ -32,4 +32,14 @@ class RapidPref {
 
   void setBaseUrl(String baseUrl) =>
       storage.write(Strings.kGetBaseUrl, baseUrl);
+
+  String? getProjectKey() => storage.read(Strings.kDatabase);
+
+  void setProjectKey(String baseUrl) =>
+      storage.write(Strings.kDatabase, baseUrl);
+
+  String? getProjectName() => storage.read(Strings.kDatabase);
+
+  void setProjectName(String baseUrl) =>
+      storage.write(Strings.kDatabase, baseUrl);
 }

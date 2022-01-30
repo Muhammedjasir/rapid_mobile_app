@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:rapid_mobile_app/res/values/strings.dart';
 
 class LoginTextFieldWidget extends StatelessWidget {
   // hint,icon,controller
@@ -7,11 +6,21 @@ class LoginTextFieldWidget extends StatelessWidget {
     Key? key,
     required this.hint,
     required TextEditingController controller,
+    this.prefixIcon,
+    required this.keyboardType,
+    required this.obscureText,
+    this.obscureClick,
+    this.shouldDisplayEyeIcon = false,
   })  : _controller = controller,
         super(key: key);
 
   final String hint;
   final TextEditingController _controller;
+  final IconData? prefixIcon;
+  final TextInputType keyboardType;
+  final bool obscureText;
+  final VoidCallback? obscureClick;
+  final bool shouldDisplayEyeIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -23,18 +32,20 @@ class LoginTextFieldWidget extends StatelessWidget {
           fontWeight: FontWeight.normal,
         ),
         border: const OutlineInputBorder(),
-        // focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: colours.text_color)),
         prefixIcon: Icon(
-          hint == Strings.kPassword ? Icons.remove_red_eye : Icons.person,
-          size: 24,
-          color: Colors.grey,
+          prefixIcon,
+        ),
+        suffixIcon: Visibility(
+          visible: shouldDisplayEyeIcon,
+          child: IconButton(
+            icon: Icon(obscureText ? Icons.visibility_off : Icons.visibility),
+            onPressed: obscureClick,
+          ),
         ),
       ),
       controller: _controller,
-      keyboardType: hint == Strings.kPassword
-          ? TextInputType.visiblePassword
-          : TextInputType.name,
-      obscureText: hint == Strings.kPassword ? true : false,
+      keyboardType: keyboardType,
+      obscureText: obscureText,
     );
   }
 }

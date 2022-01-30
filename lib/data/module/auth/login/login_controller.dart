@@ -7,10 +7,20 @@ import 'package:rapid_mobile_app/res/utils/rapid_controller.dart';
 import 'package:rapid_mobile_app/res/values/strings.dart';
 
 class LoginController extends RapidController {
-  final TextEditingController userNameController = TextEditingController(text: "TESTER");
-  final TextEditingController passwordController = TextEditingController(text: "QWERTYUIOP");
+  final TextEditingController userNameController =
+      TextEditingController(text: "TESTER");
+  final TextEditingController passwordController =
+      TextEditingController(text: "QWERTYUIOP");
 
+  Rx<bool> isObscure = true.obs;
   Rxn<BaseResponse> data = Rxn();
+
+  // navigation argument
+  dynamic get argumentData => Get.arguments;
+
+  void obscureToggle() {
+    isObscure.value = !isObscure.value;
+  }
 
   Future<BaseResponse> logIn() async {
     dynamic body = {
@@ -18,14 +28,12 @@ class LoginController extends RapidController {
       'encryppassword': passwordController.text,
     };
 
-    Map<String, String>? headers = {Strings.kHeaderKey:"$generateRandomString()",};
+    Map<String, String>? headers = {
+      Strings.kHeaderKey: GetTraceId().generateRandomString(),
+    };
 
     BaseResponse result = await apiClient.executeRequest(
-      endpoint: '',
-      method: HttpMethod.POST,
-      body: body,
-      headers: headers
-    );
+        endpoint: '', method: HttpMethod.POST, body: body, headers: headers);
     // log('responseBody3: ${result.data['token']}');
     data.value = result;
     return result;

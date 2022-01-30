@@ -27,7 +27,7 @@ class LoginButtonWidget extends StatelessWidget {
           fontWeight: FontWeight.w600,
         ),
       ),
-      child: Text(label),
+      child: Text(label.toUpperCase()),
       onPressed: onTap,
     );
   }

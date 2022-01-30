@@ -1,20 +1,22 @@
 import 'package:hive/hive.dart';
+import 'package:rapid_mobile_app/res/utils/rapid_pref.dart';
 import 'package:rapid_mobile_app/res/values/strings.dart';
 
 class DatabaseOperations {
 
   Future<Box> openDatabase() async {
+    var projectName = RapidPref().getProjectKey();
     Box box;
     try{
-      box = Hive.box(Strings.kDatabase);
+      box = Hive.box(projectName!);
     }catch(error){
-      box =  await Hive.openBox(Strings.kDatabase);
+      box =  await Hive.openBox(projectName!);
       // Logs().logData("get_local_metadata.error:", error);
     }
     return box;
   }
 
-  Future<bool> isMetadataTableEmpty(String tableName) async {
+  Future<bool> isTableEmpty(String tableName) async {
     //open database
     Box box = await openDatabase();
     // read table values

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rapid_mobile_app/res/values/colours.dart';
 
 class RapidLoadingIndicator extends StatelessWidget {
   const RapidLoadingIndicator({
@@ -11,7 +12,7 @@ class RapidLoadingIndicator extends StatelessWidget {
       height: 60.0,
       width: double.infinity,
       decoration: const BoxDecoration(
-        color: Colors.grey,
+        color: colours.icon_background_dark_grey,
         border: BorderDirectional(
           top: BorderSide(
             width: 1.0,

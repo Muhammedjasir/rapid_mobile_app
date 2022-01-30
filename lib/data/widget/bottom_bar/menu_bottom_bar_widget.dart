@@ -88,19 +88,6 @@ class _MenuBottomBarWidgetState extends State<MenuBottomBarWidget> {
           ),
         ),
         BottomNavigationBarItem(
-          label: Strings.kAddColumns.tr,
-          activeIcon: const IconBackgroundWidget(
-            icon: Icons.article_outlined,
-            backgroundColor: colours.yellow,
-            iconColor: colours.black,
-          ),
-          icon: const IconBackgroundWidget(
-            icon: Icons.article_outlined,
-            backgroundColor: colours.icon_background_dark_grey,
-            iconColor: colours.yellow,
-          ),
-        ),
-        BottomNavigationBarItem(
           label: Strings.kExportExcel.tr,
           activeIcon: const IconBackgroundWidget(
             icon: FontAwesomeIcons.fileExcel,

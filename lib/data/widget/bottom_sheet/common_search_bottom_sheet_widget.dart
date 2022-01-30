@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rapid_mobile_app/data/widget/container/icon_background_widget.dart';
-import 'package:rapid_mobile_app/data/widget/textfields/textfield_widget.dart';
+import 'package:rapid_mobile_app/data/widget/text_fields/text_field_widget.dart';
 import 'package:rapid_mobile_app/res/values/colours.dart';
 import 'package:rapid_mobile_app/res/values/strings.dart';
 
@@ -39,7 +39,7 @@ class CommonSearchBottomSheetWidget extends StatelessWidget {
             width: 5,
           ),
           InkWell(
-            child: const IconBackgroundWidget(
+            child: IconBackgroundWidget(
               iconColor: colours.white,
               backgroundColor: colours.black,
               icon: Icons.search,

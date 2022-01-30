@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
+import 'package:rapid_mobile_app/data/model/projects_list_model/project_list_response.dart';
 import 'package:rapid_mobile_app/data/module/auth/login/login_controller.dart';
 import 'package:rapid_mobile_app/data/widget/buttons/login_button_widget.dart';
 import 'package:rapid_mobile_app/data/widget/container/background_widget.dart';
 import 'package:rapid_mobile_app/data/widget/container/login_container_widget.dart';
 import 'package:rapid_mobile_app/data/widget/text/text_widget.dart';
-import 'package:rapid_mobile_app/data/widget/textfields/login_text_field_widget.dart';
+import 'package:rapid_mobile_app/data/widget/text_fields/login_text_field_widget.dart';
 import 'package:rapid_mobile_app/res/utils/rapid_pref.dart';
 import 'package:rapid_mobile_app/res/values/colours.dart';
 import 'package:rapid_mobile_app/res/values/strings.dart';
@@ -50,7 +52,7 @@ class LoginWidget extends GetView<LoginController> {
                 bottom: 45,
               ),
               child: TextWidget(
-                text: Strings.kLoginTitle.tr,
+                text: RapidPref().getProjectName().toString(),
                 textSize: 22,
                 textColor: colours.text_color,
               ),
@@ -62,15 +64,25 @@ class LoginWidget extends GetView<LoginController> {
               child: LoginTextFieldWidget(
                 hint: Strings.kUserName,
                 controller: _usernameController,
+                prefixIcon: Icons.person,
+                keyboardType: TextInputType.name,
+                obscureText: false,
               ),
             ),
             Padding(
               padding: const EdgeInsets.only(
                 bottom: 45,
               ),
-              child: LoginTextFieldWidget(
-                hint: Strings.kPassword,
-                controller: _passwordController,
+              child: Obx(
+                () => LoginTextFieldWidget(
+                  hint: Strings.kPassword,
+                  controller: _passwordController,
+                  prefixIcon: Icons.lock,
+                  keyboardType: TextInputType.visiblePassword,
+                  obscureText: controller.isObscure.value,
+                  obscureClick: () => controller.obscureToggle(),
+                  shouldDisplayEyeIcon: true,
+                ),
               ),
             ),
             LoginButtonWidget(
@@ -92,12 +104,24 @@ class LoginWidget extends GetView<LoginController> {
       final result = await controller.logIn();
       // check login API status
       if (result.status == true) {
+
+        ProjectListResponse response = ProjectListResponse(
+            projectName: controller.argumentData['projectName'],
+            projectKey: controller.argumentData['projectKey'],
+            projectUrl: controller.argumentData['url'],
+            userName: controller.userNameController.text,
+            password: controller.passwordController.text,
+            projectId: result.data['Project_id'].toString());
+
+        final userBox = await Hive.openBox<ProjectListResponse>(Strings.kRapidMainDatabase);
+        userBox.putAt(controller.argumentData['index'], response);
+
         RapidPref().changeToken(result.data['token']);
         RapidPref().changeProjectId(result.data['Project_id'].toString());
         RapidPref().changeUserName(controller.userNameController.text);
         RapidPref().changeUserPassword(controller.passwordController.text);
-        Get.toNamed(
-          Strings.kDashboardPage,
+        Get.offAllNamed(
+          Strings.kHomePage,
         );
       } else {
         Get.snackbar("Message", result.message);
