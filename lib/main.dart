@@ -13,6 +13,7 @@ import 'package:rapid_mobile_app/data/module/home/home_binding.dart';
 import 'package:rapid_mobile_app/data/module/home/home_page.dart';
 import 'package:rapid_mobile_app/data/module/subpage/menu_detailed_page/menu_detailed_binding.dart';
 import 'package:rapid_mobile_app/data/module/subpage/menu_detailed_page/menu_detailed_page.dart';
+import 'package:rapid_mobile_app/res/utils/rapid_pref.dart';
 import 'package:rapid_mobile_app/res/values/strings.dart';
 
 import 'data/model/chart_model/chart_response.dart';
@@ -110,6 +111,9 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+
+    var isToken = RapidPref().getToken() ?? "";
+
     return GetMaterialApp(
       title: Strings.kAppName.tr,
       debugShowCheckedModeBanner: false,
@@ -117,7 +121,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.grey,
       ),
       getPages: pages,
-      initialRoute: Strings.kUrlConnectionPage,
+      initialRoute: (isToken == '') ? Strings.kUrlConnectionPage : Strings.kHomePage,
     );
   }
 }

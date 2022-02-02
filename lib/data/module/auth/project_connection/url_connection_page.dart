@@ -163,9 +163,9 @@ class UrlConnectionPage extends GetView<ConnectionController> {
       // update project url
       Get.find<ApiClient>().updateBaseUrl(savedProject.projectUrl);
 
-      var isToken = RapidPref().getToken() ?? "";
+      // var isToken = RapidPref().getToken() ?? "";
       Get.toNamed(
-        (isToken == '') ? Strings.kLoginPage : Strings.kHomePage,
+        Strings.kLoginPage ,
         arguments: {
           'index': index,
           'url': savedProject.projectUrl,

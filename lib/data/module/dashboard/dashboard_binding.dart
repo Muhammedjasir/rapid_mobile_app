@@ -7,7 +7,7 @@ import 'package:rapid_mobile_app/data/module/dashboard/dashboard_controller.dart
 class DashboardBinding extends Bindings {
   @override
   void dependencies() {
-    // Get.lazyPut(() => ApiClient());
+    Get.lazyPut(() => ApiClient());
     Get.lazyPut(() => DashboardController());
   }
 

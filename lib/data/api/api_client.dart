@@ -9,6 +9,7 @@ import 'package:rapid_mobile_app/res/values/logs/logs.dart';
 class ApiClient extends GetConnect {
   ApiClient() {
     httpClient.baseUrl = RapidPref().getBaseUrl();
+    httpClient.timeout = const Duration(seconds: 180);
   }
 
   late RapidRepository rapidRepo = RapidRepository(this);

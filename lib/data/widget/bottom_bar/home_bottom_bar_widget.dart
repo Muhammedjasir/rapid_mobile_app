@@ -37,19 +37,6 @@ class _HomeBottomBarWidgetState extends State<HomeBottomBarWidget> {
       },
       items: [
         BottomNavigationBarItem(
-          label: Strings.kDashboard.tr,
-          activeIcon: const IconBackgroundWidget(
-            icon: Icons.dashboard_rounded,
-            backgroundColor: colours.yellow,
-            iconColor: colours.black,
-          ),
-          icon: const IconBackgroundWidget(
-            icon: Icons.dashboard_rounded,
-            backgroundColor: colours.icon_background_dark_grey,
-            iconColor: colours.yellow,
-          ),
-        ),
-        BottomNavigationBarItem(
           label: Strings.kHome.tr,
           activeIcon: const IconBackgroundWidget(
             icon: Icons.home,
@@ -58,6 +45,19 @@ class _HomeBottomBarWidgetState extends State<HomeBottomBarWidget> {
           ),
           icon: const IconBackgroundWidget(
             icon: Icons.home,
+            backgroundColor: colours.icon_background_dark_grey,
+            iconColor: colours.yellow,
+          ),
+        ),
+        BottomNavigationBarItem(
+          label: Strings.kDashboard.tr,
+          activeIcon: const IconBackgroundWidget(
+            icon: Icons.dashboard_rounded,
+            backgroundColor: colours.yellow,
+            iconColor: colours.black,
+          ),
+          icon: const IconBackgroundWidget(
+            icon: Icons.dashboard_rounded,
             backgroundColor: colours.icon_background_dark_grey,
             iconColor: colours.yellow,
           ),

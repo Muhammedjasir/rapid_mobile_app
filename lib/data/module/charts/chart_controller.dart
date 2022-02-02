@@ -125,7 +125,6 @@ class ChartController extends RapidController
   }
 
   void onTapTab(int index) {
-
     chartTable.clear();
     chartGraphTable.clear();
 
@@ -274,14 +273,21 @@ class ChartController extends RapidController
         final jsonDecode = json.decode(res);
         final data = ChartGraphResponse.fromJson(jsonDecode, id);
         chartGraphTable.add(data);
-        Logs.logData("graph data::", i.toString()+' '+chartGraphTable[i].csFilter
-            +' '+chartGraphTable[i].csValue.toString()+' '+chartGraphTable[i].id.toString());
+        Logs.logData(
+            "graph data::",
+            i.toString() +
+                ' ' +
+                chartGraphTable[i].csFilter +
+                ' ' +
+                chartGraphTable[i].csValue.toString() +
+                ' ' +
+                chartGraphTable[i].id.toString());
       }
     }
   }
 
   ChartGraphResponse? graphData({required int id}) {
-    Logs.logData("id::",id.toString());
+    Logs.logData("id::", id.toString());
     for (var value in chartGraphTable) {
       if (value.id == id) {
         return value;

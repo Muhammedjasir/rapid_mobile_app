@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:rapid_mobile_app/data/model/chart_graph_model/chart_graph_response.dart';
 import 'package:rapid_mobile_app/data/module/charts/chart_controller.dart';
+import 'package:rapid_mobile_app/data/module/charts/chart_dashboard_amount_widget.dart';
 import 'package:rapid_mobile_app/data/widget/container/background_widget.dart';
 import 'package:rapid_mobile_app/data/widget/container/card_container_widget.dart';
 import 'package:rapid_mobile_app/res/values/colours.dart';
@@ -28,9 +29,6 @@ class _ChartTabs extends GetView<ChartController> {
       padding: const EdgeInsets.only(top: 5, left: 10, right: 10),
       childWidget: Column(
         children: [
-          const SizedBox(
-            height: 20,
-          ),
           Container(
             alignment: Alignment.centerLeft,
             height: 45,
@@ -61,9 +59,6 @@ class _ChartTabs extends GetView<ChartController> {
           Expanded(
             child: ListView(
               children: [
-                const SizedBox(
-                  height: 10,
-                ),
                 Obx(
                   () => ListView.builder(
                     physics: const NeverScrollableScrollPhysics(),
@@ -75,7 +70,7 @@ class _ChartTabs extends GetView<ChartController> {
                         cardWidget: Obx(
                           () => ListTile(
                             leading: const Icon(Icons.downloading),
-                            title: _PriceWidget(
+                            title: ChartDashboardAmountWidget(
                               id: controller
                                   .chartDashboardTable[index].mtdSysId,
                             ),
@@ -92,7 +87,7 @@ class _ChartTabs extends GetView<ChartController> {
                   ),
                 ),
                 const SizedBox(
-                  height: 10,
+                  height: 4,
                 ),
                 Obx(
                   () => ListView.builder(
@@ -123,16 +118,27 @@ class _ChartTabs extends GetView<ChartController> {
                                   ),
                                   numberFormat: NumberFormat.compact(),
                                 ),
-                                primaryXAxis: DateTimeAxis(
-                                    // arrangeByIndex: true,
-                                    ),
+                                primaryXAxis: controller
+                                            .chartTable[index].caIsArgument ==
+                                        'key'
+                                    ? CategoryAxis()
+                                    : DateTimeAxis(
+                                        dateFormat: _AxisLabelFormat(controller
+                                            .chartTable[index].caLabelFormat),
+                                      ),
                                 enableSideBySideSeriesPlacement: false,
                                 tooltipBehavior: TooltipBehavior(
                                   enable: true,
                                 ),
-                                series: _getColumns(
-                                  id: controller.chartTable[index].cSysId,
-                                ),
+                                series: controller
+                                            .chartTable[index].caIsArgument ==
+                                        'key'
+                                    ? _getColumnsByString(
+                                        id: controller.chartTable[index].cSysId,
+                                      )
+                                    : _getColumnsByDate(
+                                        id: controller.chartTable[index].cSysId,
+                                      ),
                                 plotAreaBorderWidth: 0,
                               ),
                             ),
@@ -150,7 +156,7 @@ class _ChartTabs extends GetView<ChartController> {
     );
   }
 
-  List<ColumnSeries<ChartGraphResponse, DateTime>> _getColumns(
+  List<ColumnSeries<ChartGraphResponse, DateTime>> _getColumnsByDate(
       {required int id}) {
     List<ChartGraphResponse> data = controller.filterData(id: id);
 
@@ -167,41 +173,43 @@ class _ChartTabs extends GetView<ChartController> {
               .toList(),
           xValueMapper: (ChartGraphResponse value, _) => value.csDate,
           yValueMapper: (ChartGraphResponse value, _) => value.csValue,
-          name: distinctKey[i].toString()
+          name: distinctKey[i].toString(),
         ),
     ];
   }
-}
 
-class _PriceWidget extends GetView<ChartController> {
-  const _PriceWidget({
-    required this.id,
-    Key? key,
-  }) : super(key: key);
+  List<ColumnSeries<ChartGraphResponse, String>> _getColumnsByString(
+      {required int id}) {
+    List<ChartGraphResponse> data = controller.filterData(id: id);
 
-  final int id;
+    List<String> distinctKey = data
+        .distinct((d) => d.csFilter)
+        .select((element, index) => element.csFilter)
+        .toList();
 
-  @override
-  Widget build(BuildContext context) {
-    return Obx(
-      () {
-        final price = controller.price(id: id);
-        return Row(
-          children: [
-            SizedBox(
-              child: price != null
-                  ? Text(
-                      price.price,
-                    )
-                  : const SizedBox(
-                      width: 14,
-                      height: 14,
-                      child: CircularProgressIndicator(),
-                    ),
-            ),
-          ],
-        );
-      },
-    );
+    return <ColumnSeries<ChartGraphResponse, String>>[
+      for (int i = 0; i < distinctKey.length; ++i)
+        ColumnSeries<ChartGraphResponse, String>(
+          dataSource: data
+              .where((element) => element.csFilter == distinctKey[i].toString())
+              .toList(),
+          xValueMapper: (ChartGraphResponse value, _) => value.csKey,
+          yValueMapper: (ChartGraphResponse value, _) => value.csValue,
+          name: distinctKey[i].toString(),
+        ),
+    ];
+  }
+
+  _AxisLabelFormat(int? labelFormat) {
+    switch (labelFormat) {
+      case 2:
+        return DateFormat('dd-MM-yyyy');
+      case 11:
+        return DateFormat('MMM');
+      case 21:
+        return DateFormat('YYY');
+      case 22:
+        return DateFormat('EEE');
+    }
   }
 }
