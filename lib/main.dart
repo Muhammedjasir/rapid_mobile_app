@@ -15,6 +15,7 @@ import 'package:rapid_mobile_app/data/module/subpage/menu_detailed_page/menu_det
 import 'package:rapid_mobile_app/data/module/subpage/menu_detailed_page/menu_detailed_page.dart';
 import 'package:rapid_mobile_app/res/values/strings.dart';
 
+import 'data/model/chart_model/chart_response.dart';
 import 'data/model/chart_tab_model/chart_tab_response.dart';
 import 'data/model/metadata_columns_model/metadata_columns_response.dart';
 import 'data/model/metadata_table_model/metadata_table_response.dart';
@@ -43,9 +44,11 @@ void _registerServices() {
 
 ///register hive adapter
 void _registerAdapter() {
-  Hive.registerAdapter(
-    MetadataTableResponseAdapter(),
-  );
+  if (!Hive.isAdapterRegistered(MetadataTableResponseAdapter().typeId)) {
+    Hive.registerAdapter(
+      MetadataTableResponseAdapter(),
+    );
+  }
   Hive.registerAdapter(
     MetadataColumnsResponseAdapter(),
   );
@@ -57,6 +60,9 @@ void _registerAdapter() {
   );
   Hive.registerAdapter(
     ChartDashboardResponseAdapter(),
+  );
+  Hive.registerAdapter(
+      CharResponseAdapter(),
   );
 }
 

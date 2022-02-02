@@ -43,36 +43,45 @@ class SideDrawer extends StatelessWidget {
               bottom: 10,
             ),
           ),
-          const SizedBox(
+           SizedBox(
             width: double.infinity,
             child: DrawerElevatedButtonWidget(
               icon: Icons.lock,
               title: Strings.kChangePassword,
               colorIconTitle: colours.yellow,
               colorBackground: colours.icon_background_dark_grey,
+              onTap: _onPress,
             ),
           ),
-          const SizedBox(
+          SizedBox(
             width: double.infinity,
             child: DrawerElevatedButtonWidget(
               icon: Icons.settings,
               title: Strings.kSettings,
               colorIconTitle: colours.yellow,
               colorBackground: colours.icon_background_dark_grey,
+              onTap: _onPress,
             ),
           ),
-          const SizedBox(
+          SizedBox(
             width: double.infinity,
             child: DrawerElevatedButtonWidget(
               icon: Icons.logout,
               title: Strings.kLogout,
               colorIconTitle: colours.yellow,
               colorBackground: colours.icon_background_dark_grey,
-              onTap: onLogout,
+              onTap: _onLogoutPress,
             ),
           ),
         ],
       ),
     );
   }
+
+  void _onLogoutPress() {
+    onLogout();
+  }
+
+  void _onPress() {}
+
 }

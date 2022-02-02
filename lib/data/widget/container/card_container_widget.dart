@@ -11,7 +11,7 @@ class CardContainerWidget extends StatelessWidget{
   Widget build(BuildContext context) {
     return Container(
         margin: const EdgeInsets.all(4),
-        // padding: const EdgeInsets.all(4),
+        padding: const EdgeInsets.all(4),
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
             color: colours.card_background,

@@ -1,5 +1,3 @@
-import 'dart:developer';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class DrawerElevatedButtonWidget extends StatelessWidget {
@@ -41,9 +39,7 @@ class DrawerElevatedButtonWidget extends StatelessWidget {
         alignment: Alignment.centerLeft,
         padding: const EdgeInsets.all(10),
       ),
-      onPressed: () {
-        onTap;
-      },
+      onPressed:onTap,
     );
   }
 }

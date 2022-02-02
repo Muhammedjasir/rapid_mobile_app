@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:rapid_mobile_app/data/model/chart_graph_model/chart_graph_response.dart';
 import 'package:rapid_mobile_app/data/module/charts/chart_controller.dart';
 import 'package:rapid_mobile_app/data/widget/container/background_widget.dart';
 import 'package:rapid_mobile_app/data/widget/container/card_container_widget.dart';
 import 'package:rapid_mobile_app/res/values/colours.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:darq/darq.dart';
 
 class ChartPage extends GetView<ChartController> {
   const ChartPage({Key? key}) : super(key: key);
@@ -87,12 +91,85 @@ class _ChartTabs extends GetView<ChartController> {
                     },
                   ),
                 ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Obx(
+                  () => ListView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: controller.chartTable.length,
+                    itemBuilder: (context, index) {
+                      controller.loadChartGraph(index: index);
+                      return CardContainerWidget(
+                        cardWidget: Column(
+                          children: <Widget>[
+                            Obx(
+                              () => SfCartesianChart(
+                                title: ChartTitle(
+                                  text: controller.chartTable[index].cChartName
+                                      .toString(),
+                                ),
+                                legend: Legend(
+                                  isVisible: true,
+                                  position: LegendPosition.bottom,
+                                  toggleSeriesVisibility: true,
+                                  isResponsive: false,
+                                ),
+                                primaryYAxis: NumericAxis(
+                                  title: AxisTitle(
+                                    text: controller.chartTable[index].caName
+                                        .toString(),
+                                  ),
+                                  numberFormat: NumberFormat.compact(),
+                                ),
+                                primaryXAxis: DateTimeAxis(
+                                    // arrangeByIndex: true,
+                                    ),
+                                enableSideBySideSeriesPlacement: false,
+                                tooltipBehavior: TooltipBehavior(
+                                  enable: true,
+                                ),
+                                series: _getColumns(
+                                  id: controller.chartTable[index].cSysId,
+                                ),
+                                plotAreaBorderWidth: 0,
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                )
               ],
             ),
           ),
         ],
       ),
     );
+  }
+
+  List<ColumnSeries<ChartGraphResponse, DateTime>> _getColumns(
+      {required int id}) {
+    List<ChartGraphResponse> data = controller.filterData(id: id);
+
+    List<String> distinctKey = data
+        .distinct((d) => d.csFilter)
+        .select((element, index) => element.csFilter)
+        .toList();
+
+    return <ColumnSeries<ChartGraphResponse, DateTime>>[
+      for (int i = 0; i < distinctKey.length; ++i)
+        ColumnSeries<ChartGraphResponse, DateTime>(
+          dataSource: data
+              .where((element) => element.csFilter == distinctKey[i].toString())
+              .toList(),
+          xValueMapper: (ChartGraphResponse value, _) => value.csDate,
+          yValueMapper: (ChartGraphResponse value, _) => value.csValue,
+          name: distinctKey[i].toString()
+        ),
+    ];
   }
 }
 

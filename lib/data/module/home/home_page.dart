@@ -8,7 +8,6 @@ import 'package:rapid_mobile_app/data/widget/app_bar/app_bar_widget.dart';
 import 'package:rapid_mobile_app/data/widget/bottom_bar/home_bottom_bar_widget.dart';
 import 'package:rapid_mobile_app/data/widget/drawer/side_drawer.dart';
 import 'package:rapid_mobile_app/res/utils/rapid_pref.dart';
-import 'package:rapid_mobile_app/res/values/logs/logs.dart';
 import 'package:rapid_mobile_app/res/values/strings.dart';
 
 class HomePage extends GetView<HomeController> {
@@ -69,14 +68,16 @@ class HomePage extends GetView<HomeController> {
 
 // logout alert
 onLogout() {
-  Logs.logData("cgcg", "logData");
   Get.defaultDialog(
     title: Strings.kLogout,
     middleText: Strings.kLogoutMessage,
     textCancel: Strings.kCancel,
     textConfirm: Strings.kLogout,
+    contentPadding: const EdgeInsets.only(left: 15, right: 15, bottom: 25),
+    titlePadding: const EdgeInsets.only(top: 25, bottom: 20),
     onCancel: () => Get.back(),
     onConfirm: () {
+      RapidPref().eraseContainer();
       Get.offAllNamed(
         Strings.kUrlConnectionPage,
       );

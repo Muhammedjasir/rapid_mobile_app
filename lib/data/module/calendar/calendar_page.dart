@@ -7,8 +7,8 @@ class CalendarPage extends GetView<CalendarController> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
+    return Scaffold(
+    );
   }
 
 }

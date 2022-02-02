@@ -1,6 +1,5 @@
 import 'package:hive/hive.dart';
 import 'package:rapid_mobile_app/res/utils/rapid_pref.dart';
-import 'package:rapid_mobile_app/res/values/strings.dart';
 
 class DatabaseOperations {
 

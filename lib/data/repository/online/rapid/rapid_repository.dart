@@ -39,6 +39,10 @@ abstract class IRapidRepository {
   Future<BaseResponse> getChartDashboard();
 
   Future<BaseResponse> getChartDashboardPrice({required String query});
+
+  Future<BaseResponse> getCharts();
+
+  Future<BaseResponse> getChartGraph({required String query});
 }
 
 class RapidRepository extends IRapidRepository {
@@ -162,6 +166,21 @@ class RapidRepository extends IRapidRepository {
   Future<BaseResponse> getChartDashboardPrice({
     required String? query,
   }) async {
+    return await getBaseData(query);
+  }
+
+  @override
+  Future<BaseResponse> getCharts() async {
+    String chartQuery = 'SELECT * FROM CHARTS,CHART_USER,CHART_AXES WHERE '
+            'CA_C_CHART_ID = CU_C_CHART_ID AND '
+            'CHART_AXES.CA_C_CHART_ID=C_SYS_ID AND CU_MTL_USRID=' +
+        RapidPref().getLoginUserId().toString();
+    final result = await getBaseData(chartQuery);
+    return result;
+  }
+
+  @override
+  Future<BaseResponse> getChartGraph({required String query}) async {
     return await getBaseData(query);
   }
 }

@@ -51,8 +51,14 @@ dependencies:
   font_awesome_flutter: ^9.2.0
   #DataGrid (DataTable) library
   syncfusion_flutter_datagrid: ^19.4.47
+  #Charts library
+  syncfusion_flutter_charts: ^19.4.47
   #slidable list item
   flutter_slidable: ^1.2.0
+  # convert number format
+  intl:
+  #A port of .NET's LINQ IEnumerable functions to Dart
+  darq: ^1.1.1
 
 
 dev_dependencies:

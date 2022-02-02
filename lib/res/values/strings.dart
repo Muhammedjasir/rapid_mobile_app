@@ -62,4 +62,5 @@ class Strings {
   static const kMetadataColumns = 'metadata_columns_table';
   static const kChartTabTable = 'chart_tab_table';
   static const kChartDashboardTable = 'chart_dashboard_table';
+  static const kCharts = 'charts';
 }

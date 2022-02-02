@@ -42,4 +42,8 @@ class RapidPref {
 
   void setProjectName(String baseUrl) =>
       storage.write(Strings.kDatabase, baseUrl);
+
+  void eraseContainer(){
+    storage.erase();
+  }
 }
